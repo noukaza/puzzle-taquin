@@ -29,10 +29,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.456" />
+        app:layout_constraintVertical_bias="0.456"
+        tools:ignore="DuplicateIds" />
 
     <Button
-        android:id="@+id/letsGoButton"
+        android:id="@+id/hellpbutton"
 
         android:layout_width="43dp"
         android:layout_height="45dp"
@@ -41,7 +42,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/helpbutton"
+        android:background="@drawable/button"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
