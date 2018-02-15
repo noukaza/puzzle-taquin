@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
     private   Intent intent;
+    public static boolean VIBRATION = true , SOND = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,13 +21,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void letsGo(View view) {
-        Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vib.vibrate(50);
+        Vibration ();
 
-        intent = new Intent(MainActivity.this,GameActivity.class);
-        startActivity(intent);
+        //intent = new Intent(MainActivity.this,GameActivity.class);
+        //startActivity(intent);
 
 
+    }
+
+
+    public void changeVibration(View view){
+        VIBRATION = !VIBRATION;
+        if(VIBRATION)
+            view.animate().rotation(0);
+        else
+            view.animate().rotation(90);
+    }
+    public void changeSond(View view){
+        SOND = !SOND;
+        if(SOND)
+            view.animate().rotation(0);
+        else
+            view.animate().rotation(90);
+    }
+    public void help(View view){
+
+    }
+    public void Vibration (){
+        if(VIBRATION){
+            Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            vib.vibrate(50);
+        }
     }
 
 
