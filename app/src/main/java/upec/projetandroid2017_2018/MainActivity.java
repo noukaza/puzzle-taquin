@@ -1,6 +1,7 @@
 package upec.projetandroid2017_2018;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.WindowManager;
 public class MainActivity extends AppCompatActivity {
     private   Intent intent;
     public static boolean VIBRATION = true , SOND = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void letsGo(View view) {
-        Vibration ();
-        //intent = new Intent(MainActivity.this,GameActivity.class);
-        //startActivity(intent);
+        VibrationAndClicSound();
+        intent = new Intent(MainActivity.this,GameActivity.class);
+        startActivity(intent);
     }
 
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             view.animate().rotation(0);
         else
             view.animate().rotation(90);
+        VibrationAndClicSound();
     }
     public void changeSond(View view){
         SOND = !SOND;
@@ -38,15 +41,26 @@ public class MainActivity extends AppCompatActivity {
             view.animate().rotation(0);
         else
             view.animate().rotation(90);
+        VibrationAndClicSound();
     }
     public void help(View view){
-
+        VibrationAndClicSound();
     }
-    public void Vibration (){
+    private void Vibration (){
         if(VIBRATION){
             Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
             vib.vibrate(50);
         }
+    }
+    private void clicSound(){
+        if (SOND){
+            final MediaPlayer clicSound = MediaPlayer.create(this,R.raw.clic);
+            clicSound.start();
+        }
+    }
+    public void VibrationAndClicSound(){
+        Vibration ();
+        clicSound();
     }
 
 
