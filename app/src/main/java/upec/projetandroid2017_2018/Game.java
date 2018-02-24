@@ -10,8 +10,9 @@ import java.util.ArrayList;
  */
 
 public class Game {
-     GridLayout gridLayout ;
+    private GridLayout gridLayout ;
     private ArrayList <MyButton> myButtons ;
+
     public Game(GridLayout gridLayout) {
         this.gridLayout = gridLayout;
         myButtons = new ArrayList<>();
@@ -20,12 +21,21 @@ public class Game {
     public void init(MyButton button){
         myButtons.add(button);
     }
-    public void hashMyArry(){
+    private void hashMyArry(){
         java.util.Collections.shuffle(myButtons);
 
     }
     public void start(){
+        hashMyArry();
         for(int i =0 ; i < myButtons.size();i++)
             gridLayout.addView(myButtons.get(i).getButton());
+    }
+
+    public GridLayout getGridLayout() {
+        return gridLayout;
+    }
+
+    public ArrayList<MyButton> getMyButtons() {
+        return myButtons;
     }
 }

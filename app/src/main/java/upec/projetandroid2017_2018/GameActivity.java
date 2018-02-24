@@ -1,5 +1,6 @@
 package upec.projetandroid2017_2018;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -21,37 +22,40 @@ public class GameActivity extends AppCompatActivity {
 
     private int ROW ;
     private ArrayList <MyButton> myButtons ;
+    private Game game;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
-        ROW= 6;
+        Intent intent = getIntent();
+        int r = intent.getIntExtra("level",2);
+        ROW= r;
         myButtons = new ArrayList<>();
         GridLayout gridLayout = new GridLayout(this);
         gridLayout.setColumnCount(ROW);
         gridLayout.setRowCount(ROW);
-
-
-
-        for (int i=0 ;i<(ROW*ROW)-1;i++){
-            Button button = new Button(this);
-            MyButton myButton = new MyButton(button,i);
-            myButtons.add(myButton);
-
-
-        }
-        java.util.Collections.shuffle(myButtons);
-        for (int i=0 ;i<(ROW*ROW)-1;i++){
-            gridLayout.addView(myButtons.get(i).getButton());
-        }
-
         FrameLayout l = (FrameLayout)findViewById(R.id.FrameLyout);
-        l.addView(gridLayout);
+        game = new Game(gridLayout);
+
+
+        initGame();
+        game.start();
+
+
+
+
+        l.addView(game.getGridLayout());
 
     }
 
-
+    private void initGame() {
+        for (int i=0 ;i<(ROW*ROW)-1;i++){
+            Button button = new Button(this);
+            MyButton myButton = new MyButton(button,i);
+            game.getMyButtons().add(myButton);
+        }
+    }
 
 
 }
