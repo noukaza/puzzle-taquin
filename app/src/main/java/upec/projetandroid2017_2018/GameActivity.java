@@ -37,14 +37,8 @@ public class GameActivity extends AppCompatActivity {
         gridLayout.setRowCount(ROW);
         FrameLayout l = (FrameLayout)findViewById(R.id.FrameLyout);
         game = new Game(gridLayout);
-
-
         initGame();
         game.start();
-
-
-
-
         l.addView(game.getGridLayout());
 
     }
@@ -56,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
             game.getMyButtons().add(myButton);
         }
     }
+
 
 
 }
