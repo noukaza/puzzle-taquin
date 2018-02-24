@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Game {
     static private GridLayout gridLayout ;
     static private ArrayList <MyButton> myButtons ;
+    static private MyButton empty;
 
     public Game(GridLayout gridLayout) {
         this.gridLayout = gridLayout;
@@ -33,6 +34,10 @@ public class Game {
             gridLayout.addView(myButtons.get(i).getButton());
 
         }
+        empty.getButton().setText("");
+        //empty.getButton().setVisibility(View.INVISIBLE);
+        myButtons.add(empty);
+        gridLayout.addView(empty.getButton());
     }
 
     GridLayout getGridLayout() {
@@ -45,14 +50,17 @@ public class Game {
 
     static void step(View view){
         for (int i=0 ; i<myButtons.size();i++){
-            if(myButtons.get(i).getButton().equals(view)){
-                MyButton tempmyButton = myButtons.get(i);
-                myButtons.remove(i);
-                myButtons.add(i-1,tempmyButton);
-                rePaintLayout();
-                System.out.println();
-                System.out.println("i : "+i);
-                System.out.println();
+            if(myButtons.get(i).getButton().equals(view) && !myButtons.get(i).getButton().equals(empty.getButton())  ){
+                if (i!=0){
+                    MyButton tempmyButton = myButtons.get(i);
+                    myButtons.remove(i);
+                    myButtons.add(i-1,tempmyButton);
+                    rePaintLayout();
+                    System.out.println();
+                    System.err.println("i : "+i);
+                    System.out.println();
+                }
+
             }
         }
     }
@@ -62,5 +70,9 @@ public class Game {
             gridLayout.addView(button.getButton());
         }
 
+    }
+
+    public void setEmpty(MyButton empty) {
+        this.empty = empty;
     }
 }
