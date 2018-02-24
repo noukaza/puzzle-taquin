@@ -44,72 +44,74 @@
         app:layout_constraintVertical_bias="0.456"
         tools:ignore="DuplicateIds" />
 
-    <Button
-        android:id="@+id/hellpbutton"
-
-        android:layout_width="43dp"
-        android:layout_height="45dp"
-
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button"
-        android:onClick="help"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="?"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/vibButton"
-        app:layout_constraintHorizontal_bias="0.689"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letsGoButton" />
-
-    <Button
-        android:id="@+id/vibButton"
-
-        android:layout_width="43dp"
-        android:layout_height="45dp"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/button"
-        android:onClick="changeVibration"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="V"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/angry_btn"
-        app:layout_constraintHorizontal_bias="0.823"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letsGoButton" />
-
-    <Button
-        android:id="@+id/angry_btn"
-
-        android:layout_width="43dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-
-        android:layout_marginEnd="84dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button"
-        android:onClick="changeSond"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="S"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:orientation="horizontal"
+        android:padding="15px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letsGoButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/helpButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/sbutton"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toStartOf="@+id/vibButton"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/letsGoButton"
+            app:srcCompat="@mipmap/ic_help_outline_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/soundButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/sbutton"
+            android:onClick="changeSond"
+            android:scaleType="centerInside"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintStart_toEndOf="@+id/vibButton"
+            app:layout_constraintTop_toBottomOf="@+id/letsGoButton"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@mipmap/ic_queue_music_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/vibButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/sbutton"
+            android:onClick="changeVibration"
+            android:scaleType="centerInside"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            app:layout_constraintTop_toBottomOf="@+id/letsGoButton"
+            app:srcCompat="@mipmap/ic_vibration_white_24dp"
+            tools:layout_editor_absoluteX="183dp" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AndroidTemplate.iml" filepath="$PROJECT_DIR$/.idea/AndroidTemplate.iml" />
+      <module fileurl="file://C:\Users\NouakazaPc\androidProject\noureddine-amrane-seifallah-ezzeddine\.idea\AndroidTemplate.iml" filepath="C:\Users\NouakazaPc\androidProject\noureddine-amrane-seifallah-ezzeddine\.idea\AndroidTemplate.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/noureddine-amrane-seifallah-ezzeddine.iml" filepath="$PROJECT_DIR$/noureddine-amrane-seifallah-ezzeddine.iml" />
     </modules>
