@@ -20,13 +20,17 @@
             android:id="@+id/txtLevel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="choose your level "
-            android:textSize="35dp" />
+            android:layout_marginTop="35dp"
+            android:background="@drawable/button"
+            android:text="Choose your level !!"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:orientation="horizontal">
 
             <ImageButton
