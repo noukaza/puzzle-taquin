@@ -2,7 +2,9 @@ package upec.projetandroid2017_2018;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
@@ -79,6 +81,23 @@ public class GameActivity extends AppCompatActivity {
         Button button = new Button(this);
         MyButton myButton = new MyButton(button,(ROW*ROW));
         game.setEmpty(myButton);
+    }
+
+    private void Vibration (){
+        if(MainActivity.VIBRATION){
+            Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            vib.vibrate(50);
+        }
+    }
+    private void clicSound(){
+        if (MainActivity.SOND){
+            final MediaPlayer clicSound = MediaPlayer.create(this,R.raw.clic);
+            clicSound.start();
+        }
+    }
+    public void VibrationAndClicSound(){
+        Vibration ();
+        clicSound();
     }
 
 

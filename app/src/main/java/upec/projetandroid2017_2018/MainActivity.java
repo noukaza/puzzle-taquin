@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity {
     private   Intent intent;
     public static boolean VIBRATION = true , SOND = true;
-    ImageButton vibrationButton , soundButton ,helpButton;
+    static ImageButton vibrationButton , soundButton ,helpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void changeVibration(View view){
+    public  void changeVibration(View view){
         VIBRATION = !VIBRATION;
         if(VIBRATION)
             vibrationButton.setImageResource(R.mipmap.ic_vibration_white_24dp);

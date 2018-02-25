@@ -1,6 +1,8 @@
 package upec.projetandroid2017_2018;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ public class Level extends AppCompatActivity {
         setContentView(R.layout.activity_level);
     }
     public void selectLevel(View view) {
+        VibrationAndClicSound();
         Intent intent = new Intent(this, GameActivity.class);
         switch (view.getId()) {
             case R.id.level1:
@@ -38,5 +41,24 @@ public class Level extends AppCompatActivity {
         }
 
         startActivity(intent);
+    }
+
+
+
+    private void Vibration (){
+        if(MainActivity.VIBRATION){
+            Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            vib.vibrate(50);
+        }
+    }
+    private void clicSound(){
+        if (MainActivity.SOND){
+            final MediaPlayer clicSound = MediaPlayer.create(this,R.raw.clic);
+            clicSound.start();
+        }
+    }
+    public void VibrationAndClicSound(){
+        Vibration ();
+        clicSound();
     }
 }
