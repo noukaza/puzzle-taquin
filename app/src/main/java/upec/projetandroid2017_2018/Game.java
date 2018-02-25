@@ -35,7 +35,7 @@ public class Game {
 
         }
         empty.getButton().setText("");
-        //empty.getButton().setVisibility(View.INVISIBLE);
+        empty.getButton().setVisibility(View.INVISIBLE);
         myButtons.add(empty);
         gridLayout.addView(empty.getButton());
     }
@@ -52,13 +52,19 @@ public class Game {
         for (int i=0 ; i<myButtons.size();i++){
             if(myButtons.get(i).getButton().equals(view) && !myButtons.get(i).getButton().equals(empty.getButton())  ){
                 if (i!=0){
+                    MyButton tempmyButton1 = myButtons.get(i+1);
                     MyButton tempmyButton = myButtons.get(i);
-                    myButtons.remove(i);
-                    myButtons.add(i-1,tempmyButton);
+                    myButtons.remove(tempmyButton);
+                    myButtons.remove(tempmyButton1);
+
+                    myButtons.add(i,tempmyButton1);
+                    myButtons.add(i+1,tempmyButton);
+                 //   myButtons.add(i+1,tempmyButton);
                     rePaintLayout();
                     System.out.println();
-                    System.err.println("i : "+i);
+                    System.err.println("i : "+i+" vall :"+tempmyButton.getButton().getText().toString());
                     System.out.println();
+                    return;
                 }
 
             }
