@@ -7,6 +7,12 @@
     android:id="@+id/mainLyout"
     tools:context="upec.projetandroid2017_2018.GameActivity">
 
+    <Chronometer
+        android:id="@+id/chronometre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp" />
+
     <FrameLayout
         android:id="@+id/FrameLyout"
         android:layout_width="wrap_content"
@@ -23,17 +29,6 @@
 
 
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/timeTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="15dp"
-        android:text="time : 0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
 
 
 </android.support.constraint.ConstraintLayout>

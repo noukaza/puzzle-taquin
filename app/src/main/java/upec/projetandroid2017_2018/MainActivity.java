@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         vibrationButton = (ImageButton) findViewById(R.id.vibButton);
         soundButton = (ImageButton) findViewById(R.id.soundButton);
         helpButton = (ImageButton) findViewById(R.id.helpButton);
+
+
     }
 
     public void letsGo(View view) {

@@ -1,11 +1,9 @@
 package upec.projetandroid2017_2018;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 /**
  * Created by NoureddinePc on 24/02/2018.
@@ -21,11 +19,9 @@ public class MyButton {
         button.setGravity(Gravity.CENTER);
         button.setText(""+ID);
         button.setTextColor(Color.WHITE);
-       // button.setBackgroundResource(R.drawable.gamebutton);
-       // button.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-        //button.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         button.setMinimumWidth(60);
         button.setWidth(120);
+        button.setId(ID);
         button.setMinHeight(60);
         button.setHeight(120);
         button.setOnClickListener( new View.OnClickListener() {
@@ -35,7 +31,6 @@ public class MyButton {
             }
         });
 
-       // button.setLayoutParams(null);
         this.ID = ID;
     }
 

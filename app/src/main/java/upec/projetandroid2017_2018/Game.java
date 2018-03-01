@@ -1,5 +1,7 @@
 package upec.projetandroid2017_2018;
 
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -15,10 +17,12 @@ public class Game {
     static private GridLayout gridLayout ;
     static private ArrayList <MyButton> myButtons ;
     static private MyButton empty;
+    static private Context context;
 
-    public Game(GridLayout gridLayout) {
+    public Game(GridLayout gridLayout,Context context) {
         this.gridLayout = gridLayout;
         myButtons = new ArrayList<>();
+        this.context = context;
 
     }
     public void init(MyButton button){
@@ -62,7 +66,7 @@ public class Game {
                  //   myButtons.add(i+1,tempmyButton);
                     rePaintLayout();
                     System.out.println();
-                    System.err.println("i : "+i+" vall :"+tempmyButton.getButton().getText().toString());
+                    System.err.println("i : "+i+" vall :"+tempmyButton.getButton().getId());
                     System.out.println();
                     return;
                 }
@@ -72,6 +76,8 @@ public class Game {
     }
     static private void rePaintLayout(){
         gridLayout.removeAllViews();
+        final MediaPlayer clicSound = MediaPlayer.create(context,R.raw.clic);
+
         for (MyButton button:myButtons) {
             gridLayout.addView(button.getButton());
         }
