@@ -28,9 +28,9 @@ import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity {
 
-    private int ROW ;
+    public static int ROW ;
     private Game game;
-    Chronometer chronometre ;
+    private static Chronometer chronometre ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +38,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         Intent intent = getIntent();
         chronometre = findViewById(R.id.chronometre);
-        //chronometre.start();
-
-
+        chronometre.start();
         ROW =  intent.getIntExtra("level",2);
 
         GridLayout gridLayout = new GridLayout(this);
@@ -48,8 +46,9 @@ public class GameActivity extends AppCompatActivity {
         gridLayout.setRowCount(ROW);
         FrameLayout l = (FrameLayout)findViewById(R.id.FrameLyout);
         game = new Game(gridLayout,this);
-        initGame();
-        game.start();
+
+        game.initGame();
+        game.startgame();
         l.addView(game.getGridLayout());
 
     }
@@ -58,43 +57,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         chronometre.stop();
-        Toast.makeText(this,"onPause"+chronometre.isActivated(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"onPause"+chronometre.getFormat(),Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        chronometre.stop();
-        Toast.makeText(this,"onStop"+chronometre.isActivated(),Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        chronometre.stop();
-        Toast.makeText(this,"onStart"+chronometre.isActivated(),Toast.LENGTH_SHORT).show();
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        chronometre.start();
-
-        Toast.makeText(this,"onResume"+chronometre.isActivated(),Toast.LENGTH_SHORT).show();
-    }
-
-    private void initGame() {
-        for (int i=0 ;i<(ROW*ROW)-1;i++){
-            Button button = new Button(this);
-            MyButton myButton = new MyButton(button,i);
-            game.getMyButtons().add(myButton);
-        }
-        Button button = new Button(this);
-        MyButton myButton = new MyButton(button,(ROW*ROW));
-        game.setEmpty(myButton);
-    }
 
     private void Vibration (){
         if(MainActivity.VIBRATION){
