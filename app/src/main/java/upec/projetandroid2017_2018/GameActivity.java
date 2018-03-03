@@ -69,6 +69,7 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
         chronometre.start();
 
+
         Toast.makeText(this,"onResume"+ dbGame.getALLButton().size(),Toast.LENGTH_SHORT).show();
 
     }

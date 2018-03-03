@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class MyButton {
     private Button button;
-    private int ID;
+    private boolean isEempty ;
 
 
     MyButton(final Button button, int ID) {
@@ -23,18 +23,21 @@ public class MyButton {
         button.setId(ID);
         button.setMinHeight(60);
         button.setHeight(120);
-        this.ID = ID;
+
+        this.isEempty = false;
     }
 
     Button getButton() {
         return button;
     }
-    public int getID() {
-        return ID;
-    }
 
 
-    void setID(int ID) {
-        this.ID = ID;
+    public boolean isEempty() {
+        return isEempty;
     }
+
+    public void setEempty(boolean eempty) {
+        isEempty = eempty;
+    }
+
 }

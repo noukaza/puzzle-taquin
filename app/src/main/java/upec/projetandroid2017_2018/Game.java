@@ -73,8 +73,7 @@ public class Game  {
         myButtons.add(empty);
         empty.getButton().setOnDragListener(dragListener);
         empty.getButton().setBackground(null);
-        empty.setID((ROW* ROW)-1);
-
+        empty.setEempty(true);
         gridLayout.addView(empty.getButton());
     }
 
@@ -117,7 +116,6 @@ public class Game  {
                        gridLayout.removeView(b);
                        int temp = view.getId();
                        view.setId(b.getId());
-                       empty.setID(b.getId());
                        b.setId(temp);
                        if (view.getId()<b.getId()){
                            gridLayout.addView(view,view.getId());
@@ -139,21 +137,21 @@ public class Game  {
 
     private boolean canChanged(int id){
         int nbrCase = GameActivity.ROW;
-        Toast.makeText(context,"b : "+id+" v : "+empty.getID(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"b : "+id+" v : "+empty.getButton().getId(),Toast.LENGTH_SHORT).show();
 
-        if(((empty.getID()+1) % nbrCase)==0){
-            if (((empty.getID()+nbrCase)==id)|((empty.getID()-1)==id)|((empty.getID()-nbrCase)==id)){
+        if((((empty.getButton().getId())+1) % nbrCase)==0){
+            if (((empty.getButton().getId()+nbrCase)==id)|(((empty.getButton().getId())-1)==id)|((empty.getButton().getId()-nbrCase)==id)){
                 return true;
             }
-       }else
-       if((empty.getID()==0)|(((empty.getID()) % nbrCase)==0)){
-           if (((empty.getID()+nbrCase)==id)|((empty.getID()+1)==id)|((empty.getID()-nbrCase)==id)){
-               return true;
-           }
-       }else
-       if((empty.getID()-nbrCase)==id|(empty.getID()+nbrCase)==id|(empty.getID()-1)==id|(empty.getID()+1)==id){
-           return true;
-       }
+        }else
+        if((empty.getButton().getId()==0)|(((empty.getButton().getId()) % nbrCase)==0)){
+            if (((empty.getButton().getId()+nbrCase)==id)|(((empty.getButton().getId())+1)==id)|((empty.getButton().getId()-nbrCase)==id)){
+                return true;
+            }
+        }else
+        if((empty.getButton().getId()-nbrCase)==id|(empty.getButton().getId()+nbrCase)==id|((empty.getButton().getId())-1)==id|((empty.getButton().getId())+1)==id){
+            return true;
+        }
         return false;
     }
 

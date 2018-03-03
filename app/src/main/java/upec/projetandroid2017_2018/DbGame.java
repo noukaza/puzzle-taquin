@@ -24,7 +24,7 @@ public class DbGame extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
        // sqLiteDatabase.execSQL("create table timeLevel ( id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER )");
         //sqLiteDatabase.execSQL("create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT, level INTEGER , buttonNB INTEGER , buttonID INTEGER, myButtonID INTEGER)");
-        sqLiteDatabase.execSQL("create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT, level INTEGER , buttonNB INTEGER )");
+        sqLiteDatabase.execSQL("create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT, level INTEGER , buttonNB INTEGER, buttonID INTEGER , Empty INTEGER )");
 
 
     }
@@ -39,7 +39,9 @@ public class DbGame extends SQLiteOpenHelper {
         ContentValues contentValues= new ContentValues();
         for (int i=0;i<myButtons.size();i++){
             contentValues.put("level",Level);
-            contentValues.put("buttonNB",myButtons.get(i).getID());
+            contentValues.put("buttonNB",myButtons.get(i).getButton().getId());
+            contentValues.put("buttonID",myButtons.get(i).getButton().getId());
+
 
             db.insert("ButtonOrder",null,contentValues);
         }
