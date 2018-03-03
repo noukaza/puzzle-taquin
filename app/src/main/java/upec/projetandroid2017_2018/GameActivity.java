@@ -30,6 +30,7 @@ public class GameActivity extends AppCompatActivity {
 
     public static int ROW ;
     private Game game;
+    public DbGame dbGame;
     private static Chronometer chronometre ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
         chronometre = findViewById(R.id.chronometre);
         chronometre.start();
         ROW =  intent.getIntExtra("level",2);
-
+        dbGame = new DbGame(this);
         GridLayout gridLayout = new GridLayout(this);
         gridLayout.setColumnCount(ROW);
         gridLayout.setRowCount(ROW);
@@ -50,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         game.initGame();
         game.startgame();
         l.addView(game.getGridLayout());
+        Toast.makeText(this,"onCreate",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -57,9 +59,19 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         chronometre.stop();
-        Toast.makeText(this,"onPause"+chronometre.getFormat(),Toast.LENGTH_SHORT).show();
+        dbGame.deleteData(ROW);
+        dbGame.insertData(game.getMyButtons(),ROW);
+        Toast.makeText(this,"onPause",Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        chronometre.start();
+
+        Toast.makeText(this,"onResume"+ dbGame.getALLButton().size(),Toast.LENGTH_SHORT).show();
+
+    }
 
     private void Vibration (){
         if(MainActivity.VIBRATION){

@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.WindowManager;
 
 public class Level extends AppCompatActivity {
-
+    public DbGame dbGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_level);
+        dbGame = new DbGame(this);
     }
     public void selectLevel(View view) {
         VibrationAndClicSound();
@@ -39,7 +40,9 @@ public class Level extends AppCompatActivity {
                 intent.putExtra("level",2);
                 break;
         }
-
+        if (dbGame.thereIsAData(intent.getIntExtra("level",2))){
+            intent.setClass(this,Restart.class);
+        }
         startActivity(intent);
     }
 

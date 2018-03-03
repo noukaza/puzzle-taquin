@@ -23,8 +23,10 @@
         <activity
             android:name=".GameActivity"
             android:screenOrientation="locked" />
-        <activity android:name=".Level"
-            android:screenOrientation="locked" ></activity>
+        <activity
+            android:name=".Level"
+            android:screenOrientation="locked" />
+        <activity android:name=".Restart"></activity>
     </application>
 
 </manifest>
