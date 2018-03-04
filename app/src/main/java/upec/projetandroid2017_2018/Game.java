@@ -31,39 +31,22 @@ public class Game  {
             Button b = (Button) dragEvent.getLocalState();
 
             switch (dragEv){
-
                 case DragEvent.ACTION_DRAG_ENTERED:
                     if (canChanged(b.getId())){
-
                         gridLayout.removeView(view);
                         gridLayout.removeView(b);
-                        // temp button for arryliste
-                        /*MyButton tempv = empty;
-                        MyButton tempb = myButtons.get(b.getId());
-                        myButtons.remove(view.getId());
-                        myButtons.remove(b.getId());*/
-
-
                         int temp = view.getId();
                         view.setId(b.getId());
                         b.setId(temp);
-                        /*tempv.getButton().setId(view.getId());
-                        tempb.getButton().setId(temp);*/
                         if (view.getId()<b.getId()){
                             gridLayout.addView(view,view.getId());
                             gridLayout.addView(b,b.getId());
-                            /*myButtons.add(view.getId(),tempv);
-                            myButtons.add(b.getId(),tempb);*/
                         }else {
                             gridLayout.addView(b,b.getId());
                             gridLayout.addView(view,view.getId());
-
-                            /*myButtons.add(b.getId(),tempb);
-                            myButtons.add(view.getId(),tempv);*/
-
                         }
-                        //Toast.makeText(context,"arry: "+myButtons.size()+" id : "+myButtons.get(myButtons.size()-1).getButton().getId(),Toast.LENGTH_SHORT).show();
-
+                        if (((view.getId())==(ROW*ROW)-1)&( Iwin()))
+                                Toast.makeText(context," you WIN !!! ",Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -214,6 +197,16 @@ public class Game  {
             myButtons.add(myButton);
         }
         return myButtons;
+    }
+    public boolean Iwin(){
+        ArrayList<MyButton> myButtons = lastData();
+        for (int i=0;i<myButtons.size()-1;i++){
+
+            if (!myButtons.get(i).getButton().getText().toString().equals(Integer.toString(i)) )
+                return false;
+        }
+
+        return true;
     }
 
 }

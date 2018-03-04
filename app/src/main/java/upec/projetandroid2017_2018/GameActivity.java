@@ -1,27 +1,14 @@
 package upec.projetandroid2017_2018;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Vibrator;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,7 +18,7 @@ public class GameActivity extends AppCompatActivity {
     public static int ROW ;
     private Game game;
     public DbGame dbGame;
-    private static Chronometer chronometre ;
+    private Chronometer chronometre ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +32,12 @@ public class GameActivity extends AppCompatActivity {
         GridLayout gridLayout = new GridLayout(this);
         gridLayout.setColumnCount(ROW);
         gridLayout.setRowCount(ROW);
-        FrameLayout l = (FrameLayout)findViewById(R.id.FrameLyout);
+        FrameLayout l = findViewById(R.id.FrameLyout);
         game = new Game(gridLayout,this);
         if(intent.getBooleanExtra("restart",false)){
              restartGame();
-            //Toast.makeText(this,""+dbGame.getData(ROW,this).size(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"laste"+dbGame.thereistime(ROW),Toast.LENGTH_SHORT).show();
+
         }else {
             game.initGame();
             game.startgame();
@@ -65,7 +53,10 @@ public class GameActivity extends AppCompatActivity {
        // chronometre.stop();
         dbGame.deleteData(ROW);
         dbGame.insertData(game.lastData(),ROW);
-        Toast.makeText(this,"laste"+game.lastData().size(),Toast.LENGTH_SHORT).show();
+        /*if (dbGame.thereistime(ROW))
+            dbGame.deleteTime(ROW);
+        dbGame.saveTime(ROW,chronometre.getBase());*/
+        //Toast.makeText(this,"laste"+chronometre.getBase(),Toast.LENGTH_SHORT).show();
 
       //  Toast.makeText(this,"onPause"+dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
     }
@@ -73,11 +64,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        chronometre.start();
-
-
+       // chronometre.start();
       //  Toast.makeText(this,"onResume"+ dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
-
     }
     private void restartGame(){
         ArrayList<MyButton> myButtons = dbGame.getData(ROW,this);
@@ -94,12 +82,15 @@ public class GameActivity extends AppCompatActivity {
         }
         game.setMyButtons(myButtons);
         game.rePaintLayout();
+        /*if(dbGame.thereistime(ROW))
+            chronometre.setBase(dbGame.getDatas(ROW));*/
 
     }
 
     private void Vibration (){
         if(MainActivity.VIBRATION){
             Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            assert vib != null;
             vib.vibrate(50);
         }
     }
