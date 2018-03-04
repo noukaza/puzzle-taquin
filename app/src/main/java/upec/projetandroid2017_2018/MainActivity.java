@@ -1,20 +1,30 @@
 package upec.projetandroid2017_2018;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private   Intent intent;
     public static boolean VIBRATION = true , SOND = true;
     static ImageButton vibrationButton , soundButton ,helpButton;
+    DbGame dbGame;
+    LinearLayout starLayout ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +34,24 @@ public class MainActivity extends AppCompatActivity {
         vibrationButton = (ImageButton) findViewById(R.id.vibButton);
         soundButton = (ImageButton) findViewById(R.id.soundButton);
         helpButton = (ImageButton) findViewById(R.id.helpButton);
+        dbGame = new DbGame(this);
+        starLayout = findViewById(R.id.starLayout);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        starLayout.removeAllViews();
+        for (int i=0 ;i<5;++i){
+            ImageView imageView = new ImageButton(this);
+            if (i< dbGame.winLevel()){
+                imageView.setImageResource(R.mipmap.ic_star_white_24dp);
+            }else{
+                imageView.setImageResource(R.mipmap.ic_star_border_white_24dp);
+            }
+            imageView.setBackground(null);
+            starLayout.addView(imageView);
+        }
     }
 
     public void letsGo(View view) {
@@ -53,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void help(View view){
         VibrationAndClicSound();
+
     }
     private void Vibration (){
         if(VIBRATION){

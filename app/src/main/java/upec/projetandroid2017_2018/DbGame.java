@@ -23,13 +23,15 @@ public class DbGame extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-       // sqLiteDatabase.execSQL("create table timeLevel ( id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER )");
         String CreatTable = "create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " level INTEGER,buttonNB INTEGER,buttontxt INTEGER,empty INTEGER)" ;
         sqLiteDatabase.execSQL(CreatTable);
-        String CreatTables = "create table timeLevels ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        String CreatTabletimeLevels = "create table timeLevels ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "level INTEGER,timeLevel INTEGER)";
-        sqLiteDatabase.execSQL(CreatTables);
+        sqLiteDatabase.execSQL(CreatTabletimeLevels);
+        String CreatTablewinLevel = "create table winLevel ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "level INTEGER)";
+        sqLiteDatabase.execSQL(CreatTablewinLevel);
 
 
     }
@@ -94,7 +96,7 @@ public class DbGame extends SQLiteOpenHelper {
     }
     public void deleteTime(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.delete("timeLevel","level=?",new String[]{Integer.toString(Level)});
+        db.delete("timeLevels","level=?",new String[]{Integer.toString(Level)});
     }
     public void saveTime(int Level,long time){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -116,4 +118,17 @@ public class DbGame extends SQLiteOpenHelper {
         Cursor  ress = db.rawQuery("SELECT * FROM timeLevels WHERE level =  "+Level,null);
         return ress.getCount() != 0;
     }
+    public int winLevel() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM winLevel", null);
+        return res.getCount();
+    }
+    public void setWinLeve(int Level){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues= new ContentValues();
+        contentValues.put("level",Level);
+        db.insert("winLevel",null,contentValues);
+
+    }
+
 }

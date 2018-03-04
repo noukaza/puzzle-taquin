@@ -1,8 +1,8 @@
 package upec.projetandroid2017_2018;
 
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.support.v4.content.ContextCompat.startActivity;
 import static upec.projetandroid2017_2018.GameActivity.*;
 
 /**
@@ -23,6 +24,8 @@ public class Game  {
     private ArrayList <MyButton> myButtons ;
     private MyButton empty;
     private Context context;
+    private DbGame dbGame ;
+
 
     private View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
@@ -45,14 +48,21 @@ public class Game  {
                             gridLayout.addView(b,b.getId());
                             gridLayout.addView(view,view.getId());
                         }
-                        if (((view.getId())==(ROW*ROW)-1)&( Iwin()))
-                                Toast.makeText(context," you WIN !!! ",Toast.LENGTH_SHORT).show();
+                        if (((view.getId())==(ROW*ROW)-1)&( Iwin())){
+                            dbGame.setWinLeve(ROW);
+                            Toast.makeText(context," you WIN !!! ",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context,WinActivity.class);
+                            intent.putExtra("level",ROW);
+                            startActivity(context,intent,null);
+
+                        }
                     }
                     break;
             }
             return true;
         }
     };
+
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -68,10 +78,11 @@ public class Game  {
         this.gridLayout = gridLayout;
         myButtons = new ArrayList<>();
         this.context = context;
+        dbGame = new DbGame(context);
 
     }
 
-    public View.OnTouchListener getOnTouchListener() {
+    View.OnTouchListener getOnTouchListener() {
         return onTouchListener;
     }
 
@@ -83,11 +94,11 @@ public class Game  {
         this.gridLayout = gridLayout;
     }
 
-    public void setMyButtons(ArrayList<MyButton> myButtons) {
+    void setMyButtons(ArrayList<MyButton> myButtons) {
         this.myButtons = myButtons;
     }
 
-    public MyButton getEmpty() {
+     MyButton getEmpty() {
         return empty;
     }
 
@@ -99,7 +110,7 @@ public class Game  {
         this.context = context;
     }
 
-    public View.OnDragListener getDragListener() {
+     View.OnDragListener getDragListener() {
         return dragListener;
     }
 
@@ -153,9 +164,7 @@ public class Game  {
     ArrayList<MyButton> getMyButtons() {
         return myButtons;
     }
-    static void step(View view){
 
-    }
     public void rePaintLayout(){
         gridLayout.removeAllViews();
 

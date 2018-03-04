@@ -2,9 +2,11 @@ package upec.projetandroid2017_2018;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
@@ -25,9 +27,10 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
         Intent intent = getIntent();
-        chronometre = findViewById(R.id.chronometre);
-        chronometre.start();
         ROW =  intent.getIntExtra("level",2);
+        chronometre = findViewById(R.id.chronometre);
+        Toast.makeText(this,"time: "+chronometre.getBase(),Toast.LENGTH_SHORT).show();
+        chronometre.start();
         dbGame = new DbGame(this);
         GridLayout gridLayout = new GridLayout(this);
         gridLayout.setColumnCount(ROW);
@@ -36,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
         game = new Game(gridLayout,this);
         if(intent.getBooleanExtra("restart",false)){
              restartGame();
-            Toast.makeText(this,"laste"+dbGame.thereistime(ROW),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"tim : "+dbGame.getDatas(ROW),Toast.LENGTH_SHORT).show();
 
         }else {
             game.initGame();
@@ -50,12 +53,12 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-       // chronometre.stop();
+        chronometre.stop();
         dbGame.deleteData(ROW);
         dbGame.insertData(game.lastData(),ROW);
-        /*if (dbGame.thereistime(ROW))
+        if (dbGame.thereistime(ROW))
             dbGame.deleteTime(ROW);
-        dbGame.saveTime(ROW,chronometre.getBase());*/
+        dbGame.saveTime(ROW,chronometre.getBase());
         //Toast.makeText(this,"laste"+chronometre.getBase(),Toast.LENGTH_SHORT).show();
 
       //  Toast.makeText(this,"onPause"+dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
@@ -64,7 +67,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       // chronometre.start();
+        chronometre.start();
       //  Toast.makeText(this,"onResume"+ dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
     }
     private void restartGame(){
@@ -82,8 +85,8 @@ public class GameActivity extends AppCompatActivity {
         }
         game.setMyButtons(myButtons);
         game.rePaintLayout();
-        /*if(dbGame.thereistime(ROW))
-            chronometre.setBase(dbGame.getDatas(ROW));*/
+        if(dbGame.thereistime(ROW))
+            chronometre.setBase(dbGame.getDatas(ROW));
 
     }
 

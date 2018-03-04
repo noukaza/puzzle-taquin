@@ -26,7 +26,8 @@
         <activity
             android:name=".Level"
             android:screenOrientation="locked" />
-        <activity android:name=".Restart"></activity>
+        <activity android:name=".Restart" />
+        <activity android:name=".WinActivity"></activity>
     </application>
 
 </manifest>
