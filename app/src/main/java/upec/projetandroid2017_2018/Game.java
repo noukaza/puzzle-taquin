@@ -20,9 +20,66 @@ import static upec.projetandroid2017_2018.GameActivity.*;
 
 public class Game  {
     private GridLayout gridLayout ;
-    static private ArrayList <MyButton> myButtons ;
+    private ArrayList <MyButton> myButtons ;
     private MyButton empty;
     private Context context;
+
+    private View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View view, DragEvent dragEvent) {
+            int dragEv = dragEvent.getAction();
+            Button b = (Button) dragEvent.getLocalState();
+
+            switch (dragEv){
+
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    if (canChanged(b.getId())){
+
+                        gridLayout.removeView(view);
+                        gridLayout.removeView(b);
+                        // temp button for arryliste
+                        /*MyButton tempv = empty;
+                        MyButton tempb = myButtons.get(b.getId());
+                        myButtons.remove(view.getId());
+                        myButtons.remove(b.getId());*/
+
+
+                        int temp = view.getId();
+                        view.setId(b.getId());
+                        b.setId(temp);
+                        /*tempv.getButton().setId(view.getId());
+                        tempb.getButton().setId(temp);*/
+                        if (view.getId()<b.getId()){
+                            gridLayout.addView(view,view.getId());
+                            gridLayout.addView(b,b.getId());
+                            /*myButtons.add(view.getId(),tempv);
+                            myButtons.add(b.getId(),tempb);*/
+                        }else {
+                            gridLayout.addView(b,b.getId());
+                            gridLayout.addView(view,view.getId());
+
+                            /*myButtons.add(b.getId(),tempb);
+                            myButtons.add(view.getId(),tempv);*/
+
+                        }
+                        //Toast.makeText(context,"arry: "+myButtons.size()+" id : "+myButtons.get(myButtons.size()-1).getButton().getId(),Toast.LENGTH_SHORT).show();
+
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            ClipData data = ClipData.newPlainText("","");
+            View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(view);
+            view.startDrag(null,dragShadowBuilder,view,0);
+            return true;
+
+        }
+    };
 
     public Game(GridLayout gridLayout,Context context) {
         this.gridLayout = gridLayout;
@@ -30,9 +87,47 @@ public class Game  {
         this.context = context;
 
     }
+
+    public View.OnTouchListener getOnTouchListener() {
+        return onTouchListener;
+    }
+
+    public void setOnTouchListener(View.OnTouchListener onTouchListener) {
+        this.onTouchListener = onTouchListener;
+    }
+
+    public void setGridLayout(GridLayout gridLayout) {
+        this.gridLayout = gridLayout;
+    }
+
+    public void setMyButtons(ArrayList<MyButton> myButtons) {
+        this.myButtons = myButtons;
+    }
+
+    public MyButton getEmpty() {
+        return empty;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public View.OnDragListener getDragListener() {
+        return dragListener;
+    }
+
+    public void setDragListener(View.OnDragListener dragListener) {
+        this.dragListener = dragListener;
+    }
+
     public void init(MyButton button){
         myButtons.add(button);
     }
+
 
     private void hashMyArry(){
         java.util.Collections.shuffle(myButtons);
@@ -57,16 +152,7 @@ public class Game  {
         hashMyArry();
         for(int i =0 ; i < myButtons.size();i++) {
 
-            myButtons.get(i).getButton().setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    ClipData data = ClipData.newPlainText("","");
-                    View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(view);
-
-                    view.startDrag(null,dragShadowBuilder,view,0);
-                    return true;
-                }
-            });
+            myButtons.get(i).getButton().setOnTouchListener(onTouchListener);
             gridLayout.addView(myButtons.get(i).getButton());
         }
         empty.getButton().setText("");
@@ -84,14 +170,10 @@ public class Game  {
     ArrayList<MyButton> getMyButtons() {
         return myButtons;
     }
-
     static void step(View view){
 
     }
-    public void restartGame(ArrayList<MyButton> myButtons){
-
-    }
-    private void rePaintLayout(){
+    public void rePaintLayout(){
         gridLayout.removeAllViews();
 
         for (MyButton button:myButtons) {
@@ -100,45 +182,12 @@ public class Game  {
 
     }
 
-
-    private View.OnDragListener dragListener = new View.OnDragListener() {
-        @Override
-        public boolean onDrag(View view, DragEvent dragEvent) {
-            int dragEv = dragEvent.getAction();
-            Button b = (Button) dragEvent.getLocalState();
-
-            switch (dragEv){
-
-                case DragEvent.ACTION_DRAG_ENTERED:
-                   if (canChanged(b.getId())){
-
-                       gridLayout.removeView(view);
-                       gridLayout.removeView(b);
-                       int temp = view.getId();
-                       view.setId(b.getId());
-                       b.setId(temp);
-                       if (view.getId()<b.getId()){
-                           gridLayout.addView(view,view.getId());
-                           gridLayout.addView(b,b.getId());
-                       }else {
-                           gridLayout.addView(b,b.getId());
-                           gridLayout.addView(view,view.getId());
-                       }
-                   }
-                    break;
-            }
-            return true;
-        }
-    };
-
     public void setEmpty(MyButton empty) {
         this.empty = empty;
     }
 
     private boolean canChanged(int id){
         int nbrCase = GameActivity.ROW;
-        Toast.makeText(context,"b : "+id+" v : "+empty.getButton().getId(),Toast.LENGTH_SHORT).show();
-
         if((((empty.getButton().getId())+1) % nbrCase)==0){
             if (((empty.getButton().getId()+nbrCase)==id)|(((empty.getButton().getId())-1)==id)|((empty.getButton().getId()-nbrCase)==id)){
                 return true;
@@ -153,6 +202,18 @@ public class Game  {
             return true;
         }
         return false;
+    }
+    public ArrayList<MyButton>lastData(){
+        ArrayList<MyButton> myButtons = new ArrayList<>();
+        for (int i=0;i<this.myButtons.size();i++){
+            Button b = (Button) gridLayout.findViewById(i);
+            MyButton myButton =new MyButton(new Button(context),gridLayout.getChildAt(i).getId());
+            myButton.getButton().setText(""+b.getText());
+            if (empty.getButton().getId()== b.getId())
+                myButton.setEempty(true);
+            myButtons.add(myButton);
+        }
+        return myButtons;
     }
 
 }

@@ -47,21 +47,27 @@ public class GameActivity extends AppCompatActivity {
         gridLayout.setRowCount(ROW);
         FrameLayout l = (FrameLayout)findViewById(R.id.FrameLyout);
         game = new Game(gridLayout,this);
-
-        game.initGame();
-        game.startgame();
+        if(intent.getBooleanExtra("restart",false)){
+             restartGame();
+            //Toast.makeText(this,""+dbGame.getData(ROW,this).size(),Toast.LENGTH_SHORT).show();
+        }else {
+            game.initGame();
+            game.startgame();
+        }
         l.addView(game.getGridLayout());
-        Toast.makeText(this,"onCreate",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"onCreate",Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        chronometre.stop();
+       // chronometre.stop();
         dbGame.deleteData(ROW);
-        dbGame.insertData(game.getMyButtons(),ROW);
-        Toast.makeText(this,"onPause",Toast.LENGTH_SHORT).show();
+        dbGame.insertData(game.lastData(),ROW);
+        Toast.makeText(this,"laste"+game.lastData().size(),Toast.LENGTH_SHORT).show();
+
+      //  Toast.makeText(this,"onPause"+dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -70,7 +76,24 @@ public class GameActivity extends AppCompatActivity {
         chronometre.start();
 
 
-        Toast.makeText(this,"onResume"+ dbGame.getALLButton().size(),Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this,"onResume"+ dbGame.thereIsAData(ROW),Toast.LENGTH_SHORT).show();
+
+    }
+    private void restartGame(){
+        ArrayList<MyButton> myButtons = dbGame.getData(ROW,this);
+        for (int i=0; i< myButtons.size();i++){
+            if(!myButtons.get(i).isEempty())
+                myButtons.get(i).getButton().setOnTouchListener(game.getOnTouchListener());
+            else {
+                myButtons.get(i).getButton().setOnDragListener(game.getDragListener());
+                myButtons.get(i).getButton().setBackground(null);
+                myButtons.get(i).getButton().setText("");
+                game.setEmpty(myButtons.get(i));
+                game.getEmpty().getButton().setId(myButtons.get(i).getButton().getId());
+            }
+        }
+        game.setMyButtons(myButtons);
+        game.rePaintLayout();
 
     }
 

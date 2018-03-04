@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,8 +24,9 @@ public class DbGame extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
        // sqLiteDatabase.execSQL("create table timeLevel ( id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER )");
-        //sqLiteDatabase.execSQL("create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT, level INTEGER , buttonNB INTEGER , buttonID INTEGER, myButtonID INTEGER)");
-        sqLiteDatabase.execSQL("create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT, level INTEGER , buttonNB INTEGER, buttonID INTEGER , Empty INTEGER )");
+        String CreatTable = "create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                " level INTEGER,buttonNB INTEGER,buttontxt INTEGER,empty INTEGER)";
+        sqLiteDatabase.execSQL(CreatTable);
 
 
     }
@@ -40,22 +42,43 @@ public class DbGame extends SQLiteOpenHelper {
         for (int i=0;i<myButtons.size();i++){
             contentValues.put("level",Level);
             contentValues.put("buttonNB",myButtons.get(i).getButton().getId());
-            contentValues.put("buttonID",myButtons.get(i).getButton().getId());
-
+            contentValues.put("buttontxt",myButtons.get(i).getButton().getText().toString());
+            if (myButtons.get(i).isEempty())
+                contentValues.put("empty",1);
+            else
+                contentValues.put("empty",0);
 
             db.insert("ButtonOrder",null,contentValues);
         }
     }
 
-    public ArrayList getALLButton(){
-        ArrayList<Integer> test = new ArrayList<>();
+
+    public int test(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ButtonOrder",null);
+        Cursor res = db.rawQuery("select * from ButtonOrder WHERE level="+Level,null);
+        return res.getCount();
+    }
+
+    public ArrayList<MyButton> getData(int Level,Context context){
+        ArrayList<MyButton> myButtons = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from ButtonOrder WHERE level="+Level,null);
+        res.moveToFirst();
         while (res.isAfterLast()==false ){
-            test.add(1);
+
+            int txtButton = res.getInt(res.getColumnIndex("buttontxt"));
+            int idButton = res.getInt(res.getColumnIndex("buttonNB"));
+            int emptyButton = res.getInt(res.getColumnIndex("empty"));
+            MyButton myButton = new MyButton(new Button(context),txtButton);
+            myButton.getButton().setId(idButton);
+            if (emptyButton == 1)
+                 myButton.setEempty(true);
+            else
+                myButton.setEempty(false);
+            myButtons.add(myButton);
             res.moveToNext();
         }
-        return test;
+        return myButtons;
     }
     public boolean thereIsAData(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -63,6 +86,7 @@ public class DbGame extends SQLiteOpenHelper {
         if (ress.getCount()==0) return false;
         return true;
     }
+
     public void deleteData(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete("ButtonOrder","level=?",new String[]{Integer.toString(Level)});

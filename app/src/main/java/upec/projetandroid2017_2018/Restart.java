@@ -21,6 +21,7 @@ public class Restart extends AppCompatActivity {
         dbGame.deleteData(intents.getIntExtra("level",2));
         Intent intent = new Intent(this,GameActivity.class);
         intent.putExtra("level",intents.getIntExtra("level",2));
+        intent.putExtra("restart",false);
         startActivity(intent);
 
     }
@@ -30,6 +31,7 @@ public class Restart extends AppCompatActivity {
         Intent intents = getIntent();
         Intent intent = new Intent(this,GameActivity.class);
         intent.putExtra("level",intents.getIntExtra("level",2));
+        intent.putExtra("restart",true);
         startActivity(intent);
     }
 }
