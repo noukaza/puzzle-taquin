@@ -130,5 +130,14 @@ public class DbGame extends SQLiteOpenHelper {
         db.insert("winLevel",null,contentValues);
 
     }
+    public void deleteWinLevel(int Level){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete("winLevel","level=?",new String[]{Integer.toString(Level)});
+    }
+    public boolean existWinLevel(int Level){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor  ress = db.rawQuery("SELECT * FROM winLevel WHERE level =  "+Level,null);
+        return ress.getCount() != 0;
+    }
 
 }

@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ROW =  intent.getIntExtra("level",2);
         chronometre = findViewById(R.id.chronometre);
-        Toast.makeText(this,"time: "+chronometre.getBase(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"time: "+chronometre.getBase(),Toast.LENGTH_SHORT).show();
         chronometre.start();
         dbGame = new DbGame(this);
         GridLayout gridLayout = new GridLayout(this);
@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
         game = new Game(gridLayout,this);
         if(intent.getBooleanExtra("restart",false)){
              restartGame();
-            Toast.makeText(this,"tim : "+dbGame.getDatas(ROW),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"tim : "+dbGame.getDatas(ROW),Toast.LENGTH_SHORT).show();
 
         }else {
             game.initGame();

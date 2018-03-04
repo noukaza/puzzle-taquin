@@ -49,8 +49,9 @@ public class Game  {
                             gridLayout.addView(view,view.getId());
                         }
                         if (((view.getId())==(ROW*ROW)-1)&( Iwin())){
+                            if (dbGame.existWinLevel(ROW))
+                                dbGame.deleteWinLevel(ROW);
                             dbGame.setWinLeve(ROW);
-                            Toast.makeText(context," you WIN !!! ",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context,WinActivity.class);
                             intent.putExtra("level",ROW);
                             startActivity(context,intent,null);
