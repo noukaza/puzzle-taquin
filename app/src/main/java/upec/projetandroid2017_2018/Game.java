@@ -87,48 +87,24 @@ public class Game  {
         return onTouchListener;
     }
 
-    public void setOnTouchListener(View.OnTouchListener onTouchListener) {
-        this.onTouchListener = onTouchListener;
-    }
-
-    public void setGridLayout(GridLayout gridLayout) {
-        this.gridLayout = gridLayout;
-    }
 
     void setMyButtons(ArrayList<MyButton> myButtons) {
         this.myButtons = myButtons;
     }
 
-     MyButton getEmpty() {
+    MyButton getEmpty() {
         return empty;
     }
 
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-     View.OnDragListener getDragListener() {
+    View.OnDragListener getDragListener() {
         return dragListener;
     }
 
-    public void setDragListener(View.OnDragListener dragListener) {
-        this.dragListener = dragListener;
-    }
-
-    public void init(MyButton button){
-        myButtons.add(button);
-    }
-
-
     private void hashMyArry(){
         java.util.Collections.shuffle(myButtons);
-        for (int i=0 ;i<myButtons.size();i++){
-        myButtons.get(i).getButton().setId(i);
-        }
+        for (int i=0 ;i<myButtons.size();i++)
+            myButtons.get(i).getButton().setId(i);
+
 
     }
 
@@ -146,7 +122,6 @@ public class Game  {
     public void startgame(){
         hashMyArry();
         for(int i =0 ; i < myButtons.size();i++) {
-
             myButtons.get(i).getButton().setOnTouchListener(onTouchListener);
             gridLayout.addView(myButtons.get(i).getButton());
         }
@@ -199,7 +174,7 @@ public class Game  {
     public ArrayList<MyButton>lastData(){
         ArrayList<MyButton> myButtons = new ArrayList<>();
         for (int i=0;i<this.myButtons.size();i++){
-            Button b = (Button) gridLayout.findViewById(i);
+            Button b = gridLayout.findViewById(i);
             MyButton myButton =new MyButton(new Button(context),gridLayout.getChildAt(i).getId());
             myButton.getButton().setText(""+b.getText());
             if (empty.getButton().getId()== b.getId())
@@ -211,11 +186,9 @@ public class Game  {
     public boolean Iwin(){
         ArrayList<MyButton> myButtons = lastData();
         for (int i=0;i<myButtons.size()-1;i++){
-
             if (!myButtons.get(i).getButton().getText().toString().equals(Integer.toString(i)) )
                 return false;
         }
-
         return true;
     }
 
