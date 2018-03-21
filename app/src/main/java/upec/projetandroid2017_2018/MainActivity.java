@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         starLayout.removeAllViews();
-        for (int i=0 ;i<5;++i){
+        for (int i=0 ;i<4;++i){
             ImageView imageView = new ImageButton(this);
             if (i< dbGame.winLevel()){
                 imageView.setImageResource(R.mipmap.ic_star_white_24dp);

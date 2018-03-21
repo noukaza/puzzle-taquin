@@ -2,16 +2,15 @@ package upec.projetandroid2017_2018;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,9 +26,7 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        //connection a la base de donnée
         dbGame = new DbGame(this);
-        // recuperer le intent avec la valeur du level
         Intent intent = getIntent();
         ROW =  intent.getIntExtra("level",2);
         chronometre = findViewById(R.id.chronometre);
@@ -46,7 +43,13 @@ public class GameActivity extends AppCompatActivity {
             game.startgame();
         }
         l.addView(game.getGridLayout());
-
+        Button help = (Button) findViewById(R.id.help);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.clicHelp();
+            }
+        });
     }
 
     @Override

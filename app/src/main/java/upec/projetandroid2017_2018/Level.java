@@ -21,9 +21,7 @@ public class Level extends AppCompatActivity {
         VibrationAndClicSound();
         Intent intent = new Intent(this, GameActivity.class);
         switch (view.getId()) {
-            case R.id.level1:
-                intent.putExtra("level",2);
-                break;
+
             case R.id.level2:
                 intent.putExtra("level",3);
                 break;
@@ -37,10 +35,10 @@ public class Level extends AppCompatActivity {
                 intent.putExtra("level",6);
                 break;
             default:
-                intent.putExtra("level",2);
+                intent.putExtra("level",3);
                 break;
         }
-        if (dbGame.thereIsAData(intent.getIntExtra("level",2))){
+        if (dbGame.thereIsAData(intent.getIntExtra("level",3))){
             intent.setClass(this,Restart.class);
         }
         startActivity(intent);
