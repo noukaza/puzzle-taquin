@@ -3,13 +3,16 @@ package upec.projetandroid2017_2018;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -26,10 +29,11 @@ public class Game  {
     private MyButton empty;
     private Context context;
     private DbGame dbGame ;
-    private ArrayList <MyButton> bestSolution =new ArrayList<>();
-    private ArrayList <MyButton> step = new ArrayList<>();
+    private ArrayList <Integer> bestSolution =new ArrayList<>();
+    private ArrayList <Integer> stepsArrry = new ArrayList<>();
     private int MAX_DEPTH = 10;
-    private int BEST_DEPTH = MAX_DEPTH;
+    private int steps = 0;
+    private TextView step_txt ;
 
 
 
@@ -38,8 +42,11 @@ public class Game  {
         public boolean onDrag(View view, DragEvent dragEvent) {
             int dragEv = dragEvent.getAction();
             Button b = (Button) dragEvent.getLocalState();
-
             switch (dragEv){
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    VibrationAndClicSound();
+                    break;
                 case DragEvent.ACTION_DRAG_ENTERED:
                     if (canChanged(b.getId())){
                         gridLayout.removeView(view);
@@ -63,8 +70,11 @@ public class Game  {
                             startActivity(context,intent,null);
 
                         }
+                        steps++;
+                        step_txt.setText("Step : "+steps);
                     }
                     break;
+
             }
             return true;
         }
@@ -81,11 +91,12 @@ public class Game  {
         }
     };
 
-    public Game(GridLayout gridLayout,Context context) {
+    public Game(GridLayout gridLayout,Context context , TextView step_txt) {
         this.gridLayout = gridLayout;
         myButtons = new ArrayList<>();
         this.context = context;
         dbGame = new DbGame(context);
+        this.step_txt = step_txt;
 
     }
 
@@ -114,7 +125,7 @@ public class Game  {
 
     }
 
-    public void initGame(){
+     void initGame(){
         for (int i = 0; i<(ROW* ROW)-1; i++){
             Button button = new Button(context);
             MyButton myButton = new MyButton(button,i);
@@ -125,7 +136,7 @@ public class Game  {
         setEmpty(myButton);
     }
 
-    public void startgame(){
+     void startgame(){
         hashMyArry();
         for(int i =0 ; i < myButtons.size();i++) {
             myButtons.get(i).getButton().setOnTouchListener(onTouchListener);
@@ -147,7 +158,7 @@ public class Game  {
         return myButtons;
     }
 
-    public void rePaintLayout(){
+     void rePaintLayout(){
         gridLayout.removeAllViews();
 
         for (MyButton button:myButtons) {
@@ -156,7 +167,7 @@ public class Game  {
 
     }
 
-    public void setEmpty(MyButton empty) {
+     void setEmpty(MyButton empty) {
         this.empty = empty;
     }
 
@@ -177,7 +188,7 @@ public class Game  {
         }
         return false;
     }
-    public ArrayList<MyButton>lastData(){
+     ArrayList<MyButton>lastData(){
         ArrayList<MyButton> myButtons = new ArrayList<>();
         for (int i=0;i<this.myButtons.size();i++){
             Button b = gridLayout.findViewById(i);
@@ -189,7 +200,7 @@ public class Game  {
         }
         return myButtons;
     }
-    public boolean Iwin(){
+     boolean Iwin(){
         ArrayList<MyButton> myButtons = lastData();
         for (int i=0;i<myButtons.size()-1;i++){
             if (!myButtons.get(i).getButton().getText().toString().equals(Integer.toString(i)) )
@@ -198,104 +209,86 @@ public class Game  {
         return true;
     }
 
-    private boolean isCorrect(ArrayList<MyButton> goal,ArrayList<MyButton>now){
-        for (int i=0;i<myButtons.size()-1;i++){
-            if (!goal.get(i).getButton().getText().toString().equals(now.get(i).getButton().getText().toString()))
+
+    private boolean fin (ArrayList<Integer> goal , ArrayList<Integer> now){
+        if (now.get(now.size()-1)!=((ROW*ROW)-1)) return false;
+        for(int i=0 ;i<now.size()-1;i++)
+            if (goal.get(i)!= now.get(i))
                 return false;
-        }
         return true;
     }
-
-    public void help(ArrayList<MyButton>now, ArrayList<MyButton>goal, MyButton empty, int depth,MyButton played){
-        ArrayList<MyButton> myButtonsNow =now;
-        if (BEST_DEPTH<=depth) return;
-        if (played!=null) {
-            step.add(played);
-        }
-
-        MyButton tempEmpty = empty;
-
-        if (isCorrect(goal,myButtonsNow)){
-            BEST_DEPTH = depth;
+    private ArrayList<Integer > clone (ArrayList<Integer> arrayList){
+        ArrayList<Integer> clone = new ArrayList<>();
+        for (int i=0; i<arrayList.size();i++)
+            clone.add(arrayList.get(i));
+        return clone;
+    }
+     void clicadie(ArrayList<Integer> now, ArrayList<Integer> goal, int empty, int depth, int played){
+         Log.e("is",fin(goal,now)+"");
+        if (MAX_DEPTH <=depth) return;
+        if (played>-1) stepsArrry.add(played);
+         int tempEmpty = empty;
+        if (fin(goal,now)){
+            MAX_DEPTH= depth;
             for (int i = 0 ;i<depth;i++)
-                bestSolution.add(step.get(i));
+                bestSolution.add(stepsArrry.get(i));
+            Log.e("step",""+depth);
             return;
         }
-        //Log.e("isCorrect",""+isCorrect(goal,myButtonsNow));
 
-        int up      = up(empty.getButton().getId());
-        int down    = down(empty.getButton().getId());
-        int left    = left(empty.getButton().getId());
-        int right   = right(empty.getButton().getId());
-        if (played!=null){
-            if (up == played.getButton().getId()) up=-1;
-            if (down == played.getButton().getId()) down=-1;
-            if (left == played.getButton().getId()) left=-1;
-            if (right == played.getButton().getId()) right=-1;
-        }
-        /*if (up>=0 && up<myButtonsNow.size()){
-            //Log.e("Avant myButtonsNow",": "+myButtonsNow.get(up).getButton().getText());
-            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(up));
-            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());
-            myButtonsNow.set(up,tempEmpty);
-            myButtonsNow.get(up).getButton().setId(up);
-            myButtonsNow.get(up).getButton().setText("");
-            //Log.e("myButtonsNow",": "+myButtonsNow.get(up).getButton());
-            //Log.e("---------","--------");
-            for (int i=0 ;i<myButtonsNow.size();i++){
-                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());
-            }
-            Log.e("---------","--------");
-            help(myButtonsNow,goal,myButtonsNow.get(up),depth+1,myButtonsNow.get(up));
-        }*/
-        /*Log.e("up",": "+up);
-        Log.e("down",": "+down);
-        Log.e("left",": "+left);
-        Log.e("right",": "+right);
-        Log.e("iscorrct",""+isCorrect(goal,myButtonsNow));
-        Log.e("---------","--------");*/
-        /*if (down>=0 && down<myButtonsNow.size()){
-            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(down));
-            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());
-            myButtonsNow.set(down,tempEmpty);
-            myButtonsNow.get(down).getButton().setId(down);
-            for (int i=0 ;i<myButtonsNow.size();i++){
-                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());
-            }
-            Log.e("---------","--------");
-            help(myButtonsNow,goal,myButtonsNow.get(down),depth+1,myButtonsNow.get(down));
-        }
-        if (left>=0 && left<myButtonsNow.size()){
-            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(left));
-            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());
-            myButtonsNow.set(left,tempEmpty);
-            myButtonsNow.get(left).getButton().setId(left);
-            for (int i=0 ;i<myButtonsNow.size();i++){
-                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());
-            }
-            Log.e("---------","--------");
-            help(myButtonsNow,goal,myButtonsNow.get(left),depth+1,myButtonsNow.get(left));
-        }*/
-        Log.e("Right",""+right);
-        if (right>=0 && right<myButtonsNow.size()){
-            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(right));
-            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());
-            myButtonsNow.set(right,tempEmpty);
-            myButtonsNow.get(right).getButton().setId(right);
-            for (int i=0 ;i<myButtonsNow.size();i++){
-                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());
-            }
-            Log.e("---------","--------");
 
-            help(myButtonsNow,goal,myButtonsNow.get(right),depth+1,myButtonsNow.get(right));
+        int up      = up(tempEmpty);
+        int down    = down(tempEmpty);
+        int left    = left(tempEmpty);
+        int right   = right(tempEmpty);
+        if (played >= 0){
+            if (up == played) up=-1;
+            if (down == played) down=-1;
+            if (left ==played) left=-1;
+            if (right == played) right=-1;
         }
+        if (down>=0 && down<now.size()){
+            ArrayList<Integer> buttonNow = clone(now);
+            int temp = buttonNow.get(empty);
+            buttonNow.set(tempEmpty, buttonNow.get(down));
+            buttonNow.set(down,temp);;
+            clicadie(buttonNow,goal,down,depth+1,up(down));
+        }
+        if (up>=0 && up<now.size()){
+            ArrayList<Integer> buttonNow = clone(now);
+            int temp = buttonNow.get(empty);
+            buttonNow.set(tempEmpty, buttonNow.get(up));
+            buttonNow.set(up,temp);
+            clicadie(buttonNow,goal,up,depth+1,down(up));
+        }
+
+        if (right>=0 && right<now.size()){
+            ArrayList<Integer> buttonNow = clone(now);
+            int temp = buttonNow.get(empty);
+            buttonNow.set(tempEmpty, buttonNow.get(right));
+            buttonNow.set(right,temp);
+            clicadie(buttonNow,goal,right,depth+1,left(right));
+        }
+        if (left>=0 && left<now.size()){
+            ArrayList<Integer> buttonNow = clone(now);
+            int temp = buttonNow.get(empty);
+            buttonNow.set(tempEmpty, buttonNow.get(left));
+            buttonNow.set(left,temp);
+            clicadie(buttonNow,goal,left,depth+1,right(left));
+        }
+
+
     }
+
+
 
     private int up(int idButoon){return idButoon-ROW;}
 
     private int down(int idButoon){return idButoon+ROW;}
 
     private int left(int idButoon){
+        if (idButoon == 0)
+            return -1;
         if ((idButoon%ROW)==0)
             return -idButoon;
         else
@@ -308,34 +301,61 @@ public class Game  {
             return idButoon+1;
     }
 
-    private ArrayList<MyButton> solution(){
-        ArrayList<MyButton> myButtons= new ArrayList<>();
-        for (int i=0;i<this.myButtons.size()-1;i++){
-            MyButton myButton = new MyButton(new Button(context),i);
-            myButtons.add(myButton);
+    private void Vibration (){
+        if(MainActivity.VIBRATION){
+            Vibrator vib = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+            assert vib != null;
+            vib.vibrate(50);
         }
-        MyButton myButton = new MyButton(new Button(context),this.myButtons.size()-1);
-        myButtons.add(myButton);
-        return myButtons;
+    }
+    private void clicSound(){
+        if (MainActivity.SOND){
+            final MediaPlayer clicSound = MediaPlayer.create(context,R.raw.clic);
+            clicSound.start();
+        }
     }
 
-    public void clicHelp(){
+    public void VibrationAndClicSound(){
+        Vibration ();
+        clicSound();
+    }
 
-        ArrayList <MyButton> now = lastData();
-        ArrayList<MyButton>goal = solution();
-        for (int i=0 ;i<now.size();i++){
-            Log.e("*( "+i+" ) :"," "+now.get(i).getButton().getText());
+    private ArrayList<Integer> orderNow(){
+        ArrayList<Integer> now = new ArrayList<>();
+        for (int i = 0 ; i<this.myButtons.size();i++){
+            Button b = (Button)gridLayout.findViewById(i);
+            if (empty.getButton().getId()== b.getId())
+                now.add((ROW*ROW)-1);
+            else
+                now.add(Integer.parseInt(b.getText().toString()));
         }
-        help(now, goal, empty,0,null);
+        return now;
+    }
+    private ArrayList<Integer> solutions(){
+        ArrayList<Integer> solution = new ArrayList<>();
+        for (int i = 0 ; i<this.myButtons.size();i++)
+            solution.add(i);
+        return solution;
+    }
 
+    public void aide (){
 
-        Log.e("bestSolution ",""+bestSolution.size());
-        Log.e("step ",""+step.size());
-        Log.e("---------","--------");
+       /* ArrayList <Integer> now = orderNow();
+        ArrayList <Integer> solution = solutions();
+        clicadie(now,solution,empty.getButton().getId(),0,-1);
+*/
 
-
-
-
+        ArrayList <Integer> now = orderNow();
+        Node root = new Node(now);
+        UninFormedSearch ui = new UninFormedSearch();
+        ArrayList <Node> soluto = ui.BreadthFirstSearch(root);
+        Log.e("nnnn ",""+soluto.size());
+        String nowB = " : ";
+        for (int i=0 ;i<soluto.size();i++){
+           for (int j=0;j<soluto.get(i).puzzle.size();j++)
+               nowB = nowB +"["+soluto.get(i).puzzle.get(j)+"] ";
+        }
+        Log.e("",nowB);
     }
 
 
