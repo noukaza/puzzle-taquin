@@ -1,7 +1,5 @@
 package upec.projetandroid2017_2018;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 /**
@@ -9,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class UninFormedSearch {
-
+    public static final int MAX_SOLUTION = 1300;
     public UninFormedSearch(){
 
     }
@@ -20,7 +18,8 @@ public class UninFormedSearch {
 
         openList.add(root);
         boolean goalFount= false;
-        while (openList.size()>0 && !goalFount){
+        int depth = 0;
+        while (openList.size()>0 && !goalFount && MAX_SOLUTION>depth){
             Node currentNode = openList.get(0);
             closedList.add(currentNode);
             openList.remove(0);
@@ -36,8 +35,8 @@ public class UninFormedSearch {
                 if (contains(openList,currentChild)&&(contains(closedList,currentChild)))
                     openList.add(currentChild);
             }
+            depth++;
         }
-
         return pathToSolution;
     }
     public void pathTrace (ArrayList<Node>path , Node n){

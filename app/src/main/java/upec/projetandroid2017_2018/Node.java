@@ -1,6 +1,5 @@
 package upec.projetandroid2017_2018;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -130,18 +129,6 @@ public class Node {
             return -idButoon;
         else
             return idButoon+1;
-    }
-
-    public void printPuzzl(){
-        System.out.println();
-        int m = 0 ;
-        for (int i=0;i<ROW;i++)
-            for (int j=0;j<ROW;j++){
-                System.out.println(puzzle.get(m));
-            m++;
-            }
-        System.out.println();
-
     }
 
     public boolean isSamePuzzle(ArrayList<Integer> puzzle) {

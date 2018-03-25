@@ -25,17 +25,14 @@ public class GameActivity extends AppCompatActivity {
     private Game game;
     public DbGame dbGame;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
-
         dbGame = new DbGame(this);
         Intent intent = getIntent();
         ROW =  intent.getIntExtra("level",2);
-
         GridLayout gridLayout = new GridLayout(this);
         gridLayout.setColumnCount(ROW);
         gridLayout.setRowCount(ROW);
@@ -48,9 +45,6 @@ public class GameActivity extends AppCompatActivity {
             game.initGame();
             game.startgame();
         }
-
-
-
         l.addView(game.getGridLayout());
         Button help = (Button) findViewById(R.id.help);
         help.setOnClickListener(new View.OnClickListener() {
@@ -61,21 +55,18 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
-
         dbGame.deleteData(ROW);
         dbGame.insertData(game.lastData(),ROW);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
     }
+
     private void restartGame(){
         ArrayList<MyButton> myButtons = dbGame.getData(ROW,this);
         for (int i=0; i< myButtons.size();i++){
@@ -92,11 +83,18 @@ public class GameActivity extends AppCompatActivity {
         game.setMyButtons(myButtons);
         game.rePaintLayout();
 
-
     }
 
+    public void restartBt(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("level",ROW);
+        startActivity(intent);
+    }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent intent = new Intent(this,Level.class);
+        startActivity(intent);
+    }
 }
