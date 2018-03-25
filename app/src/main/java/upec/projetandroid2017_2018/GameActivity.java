@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class GameActivity extends AppCompatActivity {
 
     public static int ROW ;
+
     private Game game;
     public DbGame dbGame;
 
@@ -106,5 +107,6 @@ public class GameActivity extends AppCompatActivity {
     public void exit_bt(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        //game.test();
     }
 }

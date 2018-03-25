@@ -134,9 +134,9 @@ public class Node {
 
     public boolean isSamePuzzle(ArrayList<MyButton> puzzle) {
         for (int i=0; i<puzzle.size();i++){
-            if (!this.puzzle.get(i).equals(puzzle.get(i)))
-                return false;
+            if (this.puzzle.get(i).equals(puzzle.get(i)))
+                return true;
         }
-        return true;
+        return false;
     }
 }

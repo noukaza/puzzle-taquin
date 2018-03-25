@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 import static upec.projetandroid2017_2018.GameActivity.*;
+import static upec.projetandroid2017_2018.MainActivity.HASH;
 
 /**
  * Created by NoureddinePc on 24/02/2018.
@@ -140,17 +141,17 @@ public class Game  {
     }
 
      void startgame(){
-      //  hashMyArry();
-        for(int i =0 ; i < myButtons.size();i++) {
+         if (HASH) hashMyArry();
+         for(int i =0 ; i < myButtons.size();i++) {
             myButtons.get(i).getButton().setOnTouchListener(onTouchListener);
             gridLayout.addView(myButtons.get(i).getButton());
-        }
-        empty.getButton().setText("");
-        myButtons.add(empty);
-        empty.getButton().setOnDragListener(dragListener);
-        empty.getButton().setBackground(null);
-        empty.setEempty(true);
-        gridLayout.addView(empty.getButton());
+         }
+         empty.getButton().setText("");
+         myButtons.add(empty);
+         empty.getButton().setOnDragListener(dragListener);
+         empty.getButton().setBackground(null);
+         empty.setEempty(true);
+         gridLayout.addView(empty.getButton());
     }
 
     GridLayout getGridLayout() {
@@ -246,23 +247,17 @@ public class Game  {
         Node root = new Node(now);
         UninFormedSearch ui = new UninFormedSearch();
         solution = ui.BreadthFirstSearch(root);
-        Log.e("solutin ",""+solution.size());
-        Log.e("now ",""+now.size());
         String nowB = "";
 
-
-        if (solution.size() < 0)
+        if (solution.size() == 0)
             Toast.makeText(context,"can't help you",Toast.LENGTH_SHORT).show();
         else {
             solution.remove(solution.size()-1);
+
             updateWithSolution(solution.get(solution.size()-1).puzzle);
-            for (int i=0;i<solution.size();i++){
-                for (int j=0;j<solution.get(i).puzzle.size();j++)
-                    nowB = nowB + "[" + solution.get(i).puzzle.get(j).getButton().getText().toString() + "] ";
-                nowB = nowB+"\n";
-            }
-            Log.e("",nowB);
-            //solution.remove(solution.size()-1);
+            solution.remove(solution.size()-1);
+            steps+=10;
+            step_txt.setText("Step : "+steps);
         }
 
     }
@@ -289,14 +284,22 @@ public class Game  {
                 myButtons.get(i).getButton().setOnTouchListener(getOnTouchListener());
             else {
                 myButtons.get(i).getButton().setOnDragListener(getDragListener());
+
                 myButtons.get(i).getButton().setBackground(null);
                 myButtons.get(i).getButton().setText("");
                 setEmpty(myButtons.get(i));
                 getEmpty().getButton().setId(myButtons.get(i).getButton().getId());
+                //empty
             }
+            this.myButtons.set(i,myButtons.get(i));
         }
-        setMyButtons(myButtons);
         rePaintLayout();
+    }
+    public void test(){
+        String a = "";
+        for (int j=0;j<myButtons.size();j++)
+            a = a + "["+myButtons.get(j).getButton().getId()+":" +myButtons.get(j).getButton().getText().toString() + "] ";
+        Log.e("id",""+a);
     }
 
 

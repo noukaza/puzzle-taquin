@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private   Intent intent;
-    public static boolean VIBRATION = true , SOND = true;
+    public static boolean VIBRATION = true , SOND = true,HASH = false;
     static ImageButton vibrationButton , soundButton ,helpButton;
     DbGame dbGame;
     LinearLayout starLayout ;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         helpButton = findViewById(R.id.helpButton);
         dbGame = new DbGame(this);
         starLayout = findViewById(R.id.starLayout);
+        initButton();
     }
 
     @Override
@@ -80,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         VibrationAndClicSound();
     }
     public void help(View view){
+        HASH=!HASH;
+        if(HASH)
+            helpButton.setImageResource(R.mipmap.ic_line_style_white_24dp);
+        else
+            helpButton.setImageResource(R.mipmap.ic_reorder_white_24dp);
         VibrationAndClicSound();
 
     }
@@ -103,5 +109,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+    private void initButton(){
+        if(SOND)
+            soundButton.setImageResource(R.mipmap.ic_queue_music_white_24dp);
+        else
+            soundButton.setImageResource(R.mipmap.ic_volume_mute_white_24dp);
+        if(HASH)
+            helpButton.setImageResource(R.mipmap.ic_line_style_white_24dp);
+        else
+            helpButton.setImageResource(R.mipmap.ic_reorder_white_24dp);
+        if(VIBRATION)
+            vibrationButton.setImageResource(R.mipmap.ic_vibration_white_24dp);
+        else
+            vibrationButton.setImageResource(R.mipmap.ic_phonelink_erase_white_24dp );
     }
 }

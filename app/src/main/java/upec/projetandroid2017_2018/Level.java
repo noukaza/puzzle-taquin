@@ -62,4 +62,9 @@ public class Level extends AppCompatActivity {
         Vibration ();
         clicSound();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

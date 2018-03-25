@@ -25,10 +25,7 @@ public class UninFormedSearch {
             Node currentNode = openList.get(0);
             closedList.add(currentNode);
             openList.remove(0);
-
             currentNode.expandMove();
-            Log.e("sie",""+currentNode.children.size());
-
             for (int i=0; i< currentNode.children.size();i++){
                 Node currentChild = currentNode.children.get(i);
                 if (currentChild.goalTest()){

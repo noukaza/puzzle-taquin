@@ -1,0 +1,244 @@
+[1mdiff --git a/app/src/main/java/upec/projetandroid2017_2018/Game.java b/app/src/main/java/upec/projetandroid2017_2018/Game.java[m
+[1mindex 8c8165f..b3a8d47 100644[m
+[1m--- a/app/src/main/java/upec/projetandroid2017_2018/Game.java[m
+[1m+++ b/app/src/main/java/upec/projetandroid2017_2018/Game.java[m
+[36m@@ -3,6 +3,7 @@[m [mpackage upec.projetandroid2017_2018;[m
+ import android.content.ClipData;[m
+ import android.content.Context;[m
+ import android.content.Intent;[m
+[32m+[m[32mimport android.util.Log;[m
+ import android.view.DragEvent;[m
+ import android.view.MotionEvent;[m
+ import android.view.View;[m
+[36m@@ -25,6 +26,11 @@[m [mpublic class Game  {[m
+     private MyButton empty;[m
+     private Context context;[m
+     private DbGame dbGame ;[m
+[32m+[m[32m    private ArrayList <MyButton> bestSolution =new ArrayList<>();[m
+[32m+[m[32m    private ArrayList <MyButton> step = new ArrayList<>();[m
+[32m+[m[32m    private int MAX_DEPTH = 10;[m
+[32m+[m[32m    private int BEST_DEPTH = MAX_DEPTH;[m
+[32m+[m
+ [m
+ [m
+     private View.OnDragListener dragListener = new View.OnDragListener() {[m
+[36m@@ -192,4 +198,145 @@[m [mpublic class Game  {[m
+         return true;[m
+     }[m
+ [m
+[32m+[m[32m    private boolean isCorrect(ArrayList<MyButton> goal,ArrayList<MyButton>now){[m
+[32m+[m[32m        for (int i=0;i<myButtons.size()-1;i++){[m
+[32m+[m[32m            if (!goal.get(i).getButton().getText().toString().equals(now.get(i).getButton().getText().toString()))[m
+[32m+[m[32m                return false;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return true;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void help(ArrayList<MyButton>now, ArrayList<MyButton>goal, MyButton empty, int depth,MyButton played){[m
+[32m+[m[32m        ArrayList<MyButton> myButtonsNow =now;[m
+[32m+[m[32m        if (BEST_DEPTH<=depth) return;[m
+[32m+[m[32m        if (played!=null) {[m
+[32m+[m[32m            step.add(played);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        MyButton tempEmpty = empty;[m
+[32m+[m
+[32m+[m[32m        if (isCorrect(goal,myButtonsNow)){[m
+[32m+[m[32m            BEST_DEPTH = depth;[m
+[32m+[m[32m            for (int i = 0 ;i<depth;i++)[m
+[32m+[m[32m                bestSolution.add(step.get(i));[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        //Log.e("isCorrect",""+isCorrect(goal,myButtonsNow));[m
+[32m+[m
+[32m+[m[32m        int up      = up(empty.getButton().getId());[m
+[32m+[m[32m        int down    = down(empty.getButton().getId());[m
+[32m+[m[32m        int left    = left(empty.getButton().getId());[m
+[32m+[m[32m        int right   = right(empty.getButton().getId());[m
+[32m+[m[32m        if (played!=null){[m
+[32m+[m[32m            if (up == played.getButton().getId()) up=-1;[m
+[32m+[m[32m            if (down == played.getButton().getId()) down=-1;[m
+[32m+[m[32m            if (left == played.getButton().getId()) left=-1;[m
+[32m+[m[32m            if (right == played.getButton().getId()) right=-1;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        /*if (up>=0 && up<myButtonsNow.size()){[m
+[32m+[m[32m            //Log.e("Avant myButtonsNow",": "+myButtonsNow.get(up).getButton().getText());[m
+[32m+[m[32m            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(up));[m
+[32m+[m[32m            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());[m
+[32m+[m[32m            myButtonsNow.set(up,tempEmpty);[m
+[32m+[m[32m            myButtonsNow.get(up).getButton().setId(up);[m
+[32m+[m[32m            myButtonsNow.get(up).getButton().setText("");[m
+[32m+[m[32m            //Log.e("myButtonsNow",": "+myButtonsNow.get(up).getButton());[m
+[32m+[m[32m            //Log.e("---------","--------");[m
+[32m+[m[32m            for (int i=0 ;i<myButtonsNow.size();i++){[m
+[32m+[m[32m                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());[m
+[32m+[m[32m            }[m
+[32m+[m[32m            Log.e("---------","--------");[m
+[32m+[m[32m            help(myButtonsNow,goal,myButtonsNow.get(up),depth+1,myButtonsNow.get(up));[m
+[32m+[m[32m        }*/[m
+[32m+[m[32m        /*Log.e("up",": "+up);[m
+[32m+[m[32m        Log.e("down",": "+down);[m
+[32m+[m[32m        Log.e("left",": "+left);[m
+[32m+[m[32m        Log.e("right",": "+right);[m
+[32m+[m[32m        Log.e("iscorrct",""+isCorrect(goal,myButtonsNow));[m
+[32m+[m[32m        Log.e("---------","--------");*/[m
+[32m+[m[32m        /*if (down>=0 && down<myButtonsNow.size()){[m
+[32m+[m[32m            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(down));[m
+[32m+[m[32m            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());[m
+[32m+[m[32m            myButtonsNow.set(down,tempEmpty);[m
+[32m+[m[32m            myButtonsNow.get(down).getButton().setId(down);[m
+[32m+[m[32m            for (int i=0 ;i<myButtonsNow.size();i++){[m
+[32m+[m[32m                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());[m
+[32m+[m[32m            }[m
+[32m+[m[32m            Log.e("---------","--------");[m
+[32m+[m[32m            help(myButtonsNow,goal,myButtonsNow.get(down),depth+1,myButtonsNow.get(down));[m
+[32m+[m[32m        }[m
+[32m+[m[32m        if (left>=0 && left<myButtonsNow.size()){[m
+[32m+[m[32m            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(left));[m
+[32m+[m[32m            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());[m
+[32m+[m[32m            myButtonsNow.set(left,tempEmpty);[m
+[32m+[m[32m            myButtonsNow.get(left).getButton().setId(left);[m
+[32m+[m[32m            for (int i=0 ;i<myButtonsNow.size();i++){[m
+[32m+[m[32m                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());[m
+[32m+[m[32m            }[m
+[32m+[m[32m            Log.e("---------","--------");[m
+[32m+[m[32m            help(myButtonsNow,goal,myButtonsNow.get(left),depth+1,myButtonsNow.get(left));[m
+[32m+[m[32m        }*/[m
+[32m+[m[32m        Log.e("Right",""+right);[m
+[32m+[m[32m        if (right>=0 && right<myButtonsNow.size()){[m
+[32m+[m[32m            myButtonsNow.set(empty.getButton().getId(),myButtonsNow.get(right));[m
+[32m+[m[32m            myButtonsNow.get(empty.getButton().getId()).getButton().setId(empty.getButton().getId());[m
+[32m+[m[32m            myButtonsNow.set(right,tempEmpty);[m
+[32m+[m[32m            myButtonsNow.get(right).getButton().setId(right);[m
+[32m+[m[32m            for (int i=0 ;i<myButtonsNow.size();i++){[m
+[32m+[m[32m                Log.e("*( "+i+" ) :"," "+myButtonsNow.get(i).getButton().getText());[m
+[32m+[m[32m            }[m
+[32m+[m[32m            Log.e("---------","--------");[m
+[32m+[m
+[32m+[m[32m            help(myButtonsNow,goal,myButtonsNow.get(right),depth+1,myButtonsNow.get(right));[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private int up(int idButoon){return idButoon-ROW;}[m
+[32m+[m
+[32m+[m[32m    private int down(int idButoon){return idButoon+ROW;}[m
+[32m+[m
+[32m+[m[32m    private int left(int idButoon){[m
+[32m+[m[32m        if ((idButoon%ROW)==0)[m
+[32m+[m[32m            return -idButoon;[m
+[32m+[m[32m        else[m
+[32m+[m[32m            return idButoon-1;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    private int right(int idButoon){[m
+[32m+[m[32m        if (((idButoon+1)%ROW)==0)[m
+[32m+[m[32m            return -idButoon;[m
+[32m+[m[32m        else[m
+[32m+[m[32m            return idButoon+1;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private ArrayList<MyButton> solution(){[m
+[32m+[m[32m        ArrayList<MyButton> myButtons= new ArrayList<>();[m
+[32m+[m[32m        for (int i=0;i<this.myButtons.size()-1;i++){[m
+[32m+[m[32m            MyButton myButton = new MyButton(new Button(context),i);[m
+[32m+[m[32m            myButtons.add(myButton);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        MyButton myButton = new MyButton(new Button(context),this.myButtons.size()-1);[m
+[32m+[m[32m        myButtons.add(myButton);[m
+[32m+[m[32m        return myButtons;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void clicHelp(){[m
+[32m+[m
+[32m+[m[32m        ArrayList <MyButton> now = lastData();[m
+[32m+[m[32m        ArrayList<MyButton>goal = solution();[m
+[32m+[m[32m        for (int i=0 ;i<now.size();i++){[m
+[32m+[m[32m            Log.e("*( "+i+" ) :"," "+now.get(i).getButton().getText());[m
+[32m+[m[32m        }[m
+[32m+[m[32m        help(now, goal, empty,0,null);[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        Log.e("bestSolution ",""+bestSolution.size());[m
+[32m+[m[32m        Log.e("step ",""+step.size());[m
+[32m+[m[32m        Log.e("---------","--------");[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+ }[m
+[1mdiff --git a/app/src/main/java/upec/projetandroid2017_2018/GameActivity.java b/app/src/main/java/upec/projetandroid2017_2018/GameActivity.java[m
+[1mindex 76269e1..7a5da95 100644[m
+[1m--- a/app/src/main/java/upec/projetandroid2017_2018/GameActivity.java[m
+[1m+++ b/app/src/main/java/upec/projetandroid2017_2018/GameActivity.java[m
+[36m@@ -2,16 +2,15 @@[m [mpackage upec.projetandroid2017_2018;[m
+ [m
+ import android.content.Intent;[m
+ import android.media.MediaPlayer;[m
+[31m-import android.os.SystemClock;[m
+ import android.os.Vibrator;[m
+ import android.support.v7.app.AppCompatActivity;[m
+ import android.os.Bundle;[m
+[31m-import android.util.Log;[m
+[32m+[m[32mimport android.view.View;[m
+ import android.view.WindowManager;[m
+[32m+[m[32mimport android.widget.Button;[m
+ import android.widget.Chronometer;[m
+ import android.widget.FrameLayout;[m
+ import android.widget.GridLayout;[m
+[31m-import android.widget.Toast;[m
+ [m
+ import java.util.ArrayList;[m
+ [m
+[36m@@ -46,7 +45,13 @@[m [mpublic class GameActivity extends AppCompatActivity {[m
+             game.startgame();[m
+         }[m
+         l.addView(game.getGridLayout());[m
+[31m-[m
+[32m+[m[32m        Button help = (Button) findViewById(R.id.help);[m
+[32m+[m[32m        help.setOnClickListener(new View.OnClickListener() {[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onClick(View view) {[m
+[32m+[m[32m                game.clicHelp();[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+     }[m
+ [m
+     @Override[m
+[1mdiff --git a/app/src/main/res/layout/activity_game.xml b/app/src/main/res/layout/activity_game.xml[m
+[1mindex 3d33242..6887132 100644[m
+[1m--- a/app/src/main/res/layout/activity_game.xml[m
+[1m+++ b/app/src/main/res/layout/activity_game.xml[m
+[36m@@ -30,5 +30,17 @@[m
+ [m
+     </FrameLayout>[m
+ [m
+[32m+[m[32m    <Button[m
+[32m+[m[32m        android:id="@+id/help"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:layout_marginBottom="8dp"[m
+[32m+[m[32m        android:layout_marginEnd="8dp"[m
+[32m+[m[32m        android:layout_marginStart="8dp"[m
+[32m+[m[32m        android:text="help"[m
+[32m+[m[32m        app:layout_constraintBottom_toBottomOf="parent"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent" />[m
+[32m+[m
+ [m
+ </android.support.constraint.ConstraintLayout>[m
+[1mdiff --git a/gradle.properties b/gradle.properties[m
+[1mindex aac7c9b..ef89949 100644[m
+[1m--- a/gradle.properties[m
+[1m+++ b/gradle.properties[m
+[36m@@ -9,7 +9,8 @@[m
+ [m
+ # Specifies the JVM arguments used for the daemon process.[m
+ # The setting is particularly useful for tweaking memory settings.[m
+[31m-org.gradle.jvmargs=-Xmx1536m[m
+[32m+[m[32morg.gradle.jvmargs=-Xmx1536\[m
+[32m+[m[32m  m[m
+ [m
+ # When configured, Gradle will run in incubating parallel mode.[m
+ # This option should only be used with decoupled projects. More details, visit[m
