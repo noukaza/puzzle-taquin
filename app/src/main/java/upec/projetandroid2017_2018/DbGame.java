@@ -26,9 +26,9 @@ public class DbGame extends SQLiteOpenHelper {
         String CreatTable = "create table ButtonOrder ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " level INTEGER,buttonNB INTEGER,buttontxt INTEGER,empty INTEGER)" ;
         sqLiteDatabase.execSQL(CreatTable);
-        String CreatTabletimeLevels = "create table timeLevels ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "level INTEGER,timeLevel INTEGER)";
-        sqLiteDatabase.execSQL(CreatTabletimeLevels);
+        String CreatTablestepLevels = "create table stepLevels ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "level INTEGER,stepLevel INTEGER)";
+        sqLiteDatabase.execSQL(CreatTablestepLevels);
         String CreatTablewinLevel = "create table winLevel ( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "level INTEGER)";
         sqLiteDatabase.execSQL(CreatTablewinLevel);
@@ -94,28 +94,28 @@ public class DbGame extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete("ButtonOrder","level=?",new String[]{Integer.toString(Level)});
     }
-    public void deleteTime(int Level){
+    public void deletestepLevels(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.delete("timeLevels","level=?",new String[]{Integer.toString(Level)});
+        db.delete("stepLevels","level=?",new String[]{Integer.toString(Level)});
     }
-    public void saveTime(int Level,long time){
+    public void saveStepLevels(int Level,long step){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put("level",Level);
-        contentValues.put("timeLevel",time);
-        db.insert("timeLevels",null,contentValues);
+        contentValues.put("stepLevel",step);
+        db.insert("stepLevels",null,contentValues);
 
     }
     public long getDatas(int Level) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from timeLevels WHERE level=" + Level, null);
+        Cursor res = db.rawQuery("select * from stepLevels WHERE level=" + Level, null);
         res.moveToFirst();
-        return res.getLong(res.getColumnIndex("timeLevel"));
+        return res.getLong(res.getColumnIndex("stepLevel"));
         //return res.getCount();
     }
-    public boolean thereistime(int Level){
+    public boolean thereisStep(int Level){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor  ress = db.rawQuery("SELECT * FROM timeLevels WHERE level =  "+Level,null);
+        Cursor  ress = db.rawQuery("SELECT * FROM stepLevels WHERE level =  "+Level,null);
         return ress.getCount() != 0;
     }
     public int winLevel() {

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import static upec.projetandroid2017_2018.GameActivity.ROW;
+
 public class WinActivity extends AppCompatActivity {
     Intent intent,getIntent;
     @Override
@@ -13,6 +15,10 @@ public class WinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
         getIntent = getIntent();
+        DbGame dbGame = new DbGame(this);
+        dbGame.deletestepLevels(ROW);
+        dbGame.deleteData(ROW);
+
     }
 
     public void home(View view) {

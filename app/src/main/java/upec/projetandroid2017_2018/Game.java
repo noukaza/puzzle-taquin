@@ -31,6 +31,7 @@ public class Game  {
     private DbGame dbGame ;
     private int steps = 0;
     private TextView step_txt ;
+    private ArrayList <Node> solution;
 
     private View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
@@ -95,6 +96,14 @@ public class Game  {
 
     }
 
+    public int getSteps() {
+        return steps;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
     View.OnTouchListener getOnTouchListener() {
         return onTouchListener;
     }
@@ -148,7 +157,7 @@ public class Game  {
         return gridLayout;
     }
 
-    ArrayList<MyButton> getMyButtons() {
+    private ArrayList<MyButton> getMyButtons() {
         return myButtons;
     }
 
@@ -192,7 +201,7 @@ public class Game  {
         }
         return myButtons;
     }
-     boolean Iwin(){
+     private boolean Iwin(){
         ArrayList<MyButton> myButtons = lastData();
         for (int i=0;i<myButtons.size()-1;i++){
             if (!myButtons.get(i).getButton().getText().toString().equals(Integer.toString(i)) )
@@ -232,24 +241,61 @@ public class Game  {
         return now;
     }
 
-    public void aide (){
+    void aide(){
         ArrayList <Integer> now = orderNow();
         Node root = new Node(now);
         UninFormedSearch ui = new UninFormedSearch();
-        ArrayList <Node> soluto = ui.BreadthFirstSearch(root);
+        solution = ui.BreadthFirstSearch(root);
+        Log.e("nnnn ",""+solution.size());
+        String nowB = "";
 
-        Log.e("nnnn ",""+soluto.size());
-        String nowB = " : ";
-        for (int i=soluto.size()-1 ;i>=0;i--){
-           for (int j=0;j<soluto.get(i).puzzle.size();j++)
-               nowB = nowB +"["+soluto.get(i).puzzle.get(j)+"] ";
-            nowB = nowB+"\n";
-        }
-        Log.e("",nowB);
 
-        if (soluto.size() == 0)
+        if (solution.size() < 0)
             Toast.makeText(context,"can't help you",Toast.LENGTH_SHORT).show();
+        else {
+            solution.remove(solution.size()-1);
+            updateWithSolution(solution.get(solution.size()-1).puzzle);
+            for (int i=0;i<solution.size();i++){
+                for (int j=0;j<solution.get(i).puzzle.size();j++)
+                    nowB = nowB + "[" + solution.get(i).puzzle.get(j) + "] ";
+                nowB = nowB+"\n";
+            }
+            Log.e("",nowB);
+            //solution.remove(solution.size()-1);
+        }
 
+    }
+
+    private ArrayList<MyButton>  trasnlati(ArrayList<Integer> array){
+        ArrayList<MyButton> myButtons = new ArrayList<>();
+        for (int i=0; i<array.size();i++){
+            if (array.get(i)!=(ROW*ROW)-1){
+                MyButton myButton = new MyButton(new Button(context),array.get(i));
+                myButtons.add(myButton);
+            }else {
+                MyButton myButton = new MyButton(new Button(context),array.get(i));
+                myButton.setEempty(true);
+                myButtons.add(myButton);
+            }
+        }
+        return myButtons;
+    }
+    private void updateWithSolution(ArrayList<Integer> solution){
+
+        ArrayList<MyButton> myButtons = trasnlati(solution);
+        for (int i=0; i< myButtons.size();i++){
+            if(!myButtons.get(i).isEempty())
+                myButtons.get(i).getButton().setOnTouchListener(getOnTouchListener());
+            else {
+                myButtons.get(i).getButton().setOnDragListener(getDragListener());
+                myButtons.get(i).getButton().setBackground(null);
+                myButtons.get(i).getButton().setText("");
+                setEmpty(myButtons.get(i));
+                getEmpty().getButton().setId(myButtons.get(i).getButton().getId());
+            }
+        }
+        setMyButtons(myButtons);
+        rePaintLayout();
     }
 
 

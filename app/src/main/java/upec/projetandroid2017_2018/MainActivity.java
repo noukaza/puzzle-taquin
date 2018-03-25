@@ -100,5 +100,8 @@ public class MainActivity extends AppCompatActivity {
         clicSound();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }

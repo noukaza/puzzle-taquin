@@ -41,6 +41,7 @@ public class GameActivity extends AppCompatActivity {
         game = new Game(gridLayout,this,stepText);
         if(intent.getBooleanExtra("restart",false)){
              restartGame();
+             stepText.setText("Step : "+ dbGame.getDatas(ROW));
         }else {
             game.initGame();
             game.startgame();
@@ -60,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
         dbGame.deleteData(ROW);
         dbGame.insertData(game.lastData(),ROW);
+        dbGame.deletestepLevels(ROW);
+        dbGame.saveStepLevels(ROW,game.getSteps());
     }
 
     @Override
@@ -82,6 +85,8 @@ public class GameActivity extends AppCompatActivity {
         }
         game.setMyButtons(myButtons);
         game.rePaintLayout();
+        game.setSteps((int) dbGame.getDatas(ROW));
+
 
     }
 
@@ -95,6 +100,11 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
         Intent intent = new Intent(this,Level.class);
+        startActivity(intent);
+    }
+
+    public void exit_bt(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
