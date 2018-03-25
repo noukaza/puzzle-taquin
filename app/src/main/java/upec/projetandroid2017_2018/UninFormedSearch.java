@@ -1,5 +1,7 @@
 package upec.projetandroid2017_2018;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -8,9 +10,9 @@ import java.util.ArrayList;
 
 public class UninFormedSearch {
     public static final int MAX_SOLUTION = 1300;
-    public UninFormedSearch(){
 
-    }
+    public UninFormedSearch(){}
+
     public ArrayList<Node> BreadthFirstSearch(Node root){
         ArrayList<Node>pathToSolution = new ArrayList<>();
         ArrayList<Node>openList = new ArrayList<>();
@@ -25,6 +27,7 @@ public class UninFormedSearch {
             openList.remove(0);
 
             currentNode.expandMove();
+            Log.e("sie",""+currentNode.children.size());
 
             for (int i=0; i< currentNode.children.size();i++){
                 Node currentChild = currentNode.children.get(i);

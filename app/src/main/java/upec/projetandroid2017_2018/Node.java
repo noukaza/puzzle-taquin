@@ -1,6 +1,8 @@
 package upec.projetandroid2017_2018;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import static upec.projetandroid2017_2018.GameActivity.ROW;
@@ -13,42 +15,41 @@ public class Node {
 
     public ArrayList <Node> children = new ArrayList<>();
     public Node parent ;
-    public ArrayList<Integer> puzzle = new ArrayList<>();
+    public ArrayList<MyButton> puzzle = new ArrayList<>();
     public int empty ;
 
-    public  Node(ArrayList<Integer> problem){
+    public  Node(ArrayList<MyButton> problem){
 
         setPuzzle(problem);
 
     }
-    private void setPuzzle (ArrayList<Integer> arrayList){
+    private void setPuzzle (ArrayList<MyButton> arrayList){
         for (int i=0; i<arrayList.size();i++)
             puzzle.add(arrayList.get(i));
     }
     public boolean goalTest () {
-        if (puzzle.get(puzzle.size() - 1) != ((ROW * ROW) - 1)) return false;
+        if (!puzzle.get(puzzle.size()-1).isEempty())return false;
         for (int i = 0; i < puzzle.size() - 2; i++)
-            if (puzzle.get(i)>puzzle.get(i+1))
+            if (Integer.parseInt(puzzle.get(i).getButton().getText().toString())> Integer.parseInt(puzzle.get(i+1).getButton().getText().toString()))
                 return false;
         return true;
     }
     public void expandMove(){
         for (int i=0;i<puzzle.size();i++)
-            if (puzzle.get(i)== (ROW*ROW)-1)
+            if (puzzle.get(i).isEempty())
                 empty= i;
         moveToDown(puzzle,empty);
         moveToLeft(puzzle,empty);
         moveToRight(puzzle,empty);
         moveToUp(puzzle,empty);
     }
-    public void moveToUp(ArrayList<Integer> p, int i){
+    public void moveToUp(ArrayList<MyButton> p, int i){
         int up = up(i);
         if (up>=0 && up<p.size()){
-
-            ArrayList<Integer> pc = new ArrayList<>();
+            ArrayList<MyButton> pc = new ArrayList<>();
             clone(pc,p);
 
-            int temp = pc.get(up);
+            MyButton temp = pc.get(up);
             pc.set(up,pc.get(i));
             pc.set(i,temp);
 
@@ -59,13 +60,13 @@ public class Node {
         }
 
     }
-    public void moveToDown(ArrayList<Integer> p, int i){
+    public void moveToDown(ArrayList<MyButton> p, int i){
         int down= down(i);
         if (down>=0 && down<p.size()){
-            ArrayList<Integer> pc = new ArrayList<>();
+            ArrayList<MyButton> pc = new ArrayList<>();
             clone(pc,p);
 
-            int temp = pc.get(down);
+            MyButton temp = pc.get(down);
             pc.set(down,pc.get(i));
             pc.set(i,temp);
 
@@ -75,13 +76,13 @@ public class Node {
         }
 
     }
-    public void moveToRight(ArrayList<Integer> p, int i){
+    public void moveToRight(ArrayList<MyButton> p, int i){
         int right= right(i);
         if (right>=0 && right<p.size()){
-            ArrayList<Integer> pc = new ArrayList<>();
+            ArrayList<MyButton> pc = new ArrayList<>();
             clone(pc,p);
 
-            int temp = pc.get(right);
+            MyButton temp = pc.get(right);
             pc.set(right,pc.get(i));
             pc.set(i,temp);
 
@@ -92,13 +93,13 @@ public class Node {
 
 
     }
-    public void moveToLeft(ArrayList<Integer> p, int i){
+    public void moveToLeft(ArrayList<MyButton> p, int i){
         int left= left(i);
         if (left>=0 && left<p.size()){
-            ArrayList<Integer> pc = new ArrayList<>();
+            ArrayList<MyButton> pc = new ArrayList<>();
             clone(pc,p);
 
-            int temp = pc.get(left);
+            MyButton temp = pc.get(left);
             pc.set(left,pc.get(i));
             pc.set(i,temp);
 
@@ -108,7 +109,7 @@ public class Node {
         }
 
     }
-    private void clone (ArrayList<Integer> a, ArrayList<Integer>b){
+    private void clone (ArrayList<MyButton> a, ArrayList<MyButton>b){
         for (int i=0; i<b.size();i++)
             a.add(b.get(i));
     }
@@ -131,11 +132,11 @@ public class Node {
             return idButoon+1;
     }
 
-    public boolean isSamePuzzle(ArrayList<Integer> puzzle) {
+    public boolean isSamePuzzle(ArrayList<MyButton> puzzle) {
         for (int i=0; i<puzzle.size();i++){
-            if (this.puzzle.get(i) == puzzle.get(i))
-                return true;
+            if (!this.puzzle.get(i).equals(puzzle.get(i)))
+                return false;
         }
-        return false;
+        return true;
     }
 }

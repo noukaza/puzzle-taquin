@@ -242,11 +242,12 @@ public class Game  {
     }
 
     void aide(){
-        ArrayList <Integer> now = orderNow();
+        ArrayList <MyButton> now = lastData();
         Node root = new Node(now);
         UninFormedSearch ui = new UninFormedSearch();
         solution = ui.BreadthFirstSearch(root);
-        Log.e("nnnn ",""+solution.size());
+        Log.e("solutin ",""+solution.size());
+        Log.e("now ",""+now.size());
         String nowB = "";
 
 
@@ -257,7 +258,7 @@ public class Game  {
             updateWithSolution(solution.get(solution.size()-1).puzzle);
             for (int i=0;i<solution.size();i++){
                 for (int j=0;j<solution.get(i).puzzle.size();j++)
-                    nowB = nowB + "[" + solution.get(i).puzzle.get(j) + "] ";
+                    nowB = nowB + "[" + solution.get(i).puzzle.get(j).getButton().getText().toString() + "] ";
                 nowB = nowB+"\n";
             }
             Log.e("",nowB);
@@ -280,9 +281,9 @@ public class Game  {
         }
         return myButtons;
     }
-    private void updateWithSolution(ArrayList<Integer> solution){
+    private void updateWithSolution(ArrayList<MyButton> solution){
 
-        ArrayList<MyButton> myButtons = trasnlati(solution);
+        ArrayList<MyButton> myButtons = solution;
         for (int i=0; i< myButtons.size();i++){
             if(!myButtons.get(i).isEempty())
                 myButtons.get(i).getButton().setOnTouchListener(getOnTouchListener());
