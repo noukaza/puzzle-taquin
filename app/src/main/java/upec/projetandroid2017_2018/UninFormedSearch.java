@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class UninFormedSearch {
     public static final int MAX_SOLUTION = 1300;
 
-    public UninFormedSearch(){}
+    public UninFormedSearch(){
+
+    }
 
     public ArrayList<Node> BreadthFirstSearch(Node root){
         ArrayList<Node>pathToSolution = new ArrayList<>();
@@ -58,4 +60,6 @@ public class UninFormedSearch {
     return true;
     }
 }
+
+
 

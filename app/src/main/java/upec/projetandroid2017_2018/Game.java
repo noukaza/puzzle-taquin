@@ -245,7 +245,7 @@ public class Game  {
     void aide(){
         ArrayList <MyButton> now = lastData();
         Node root = new Node(now);
-        UninFormedSearch ui = new UninFormedSearch();
+        UninFormedSearch ui= new UninFormedSearch();
         solution = ui.BreadthFirstSearch(root);
         if (solution.size() == 0)
             Toast.makeText(context,"can't help you",Toast.LENGTH_SHORT).show();
