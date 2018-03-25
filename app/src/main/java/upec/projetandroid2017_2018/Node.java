@@ -110,8 +110,7 @@ public class Node {
 
     }
     private void clone (ArrayList<MyButton> a, ArrayList<MyButton>b){
-        for (int i=0; i<b.size();i++)
-            a.add(b.get(i));
+        a.addAll(b);
     }
     private int up(int idButoon){return idButoon-ROW;}
 

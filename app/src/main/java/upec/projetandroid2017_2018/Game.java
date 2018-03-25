@@ -247,37 +247,19 @@ public class Game  {
         Node root = new Node(now);
         UninFormedSearch ui = new UninFormedSearch();
         solution = ui.BreadthFirstSearch(root);
-        String nowB = "";
-
         if (solution.size() == 0)
             Toast.makeText(context,"can't help you",Toast.LENGTH_SHORT).show();
         else {
             solution.remove(solution.size()-1);
-
-            updateWithSolution(solution.get(solution.size()-1).puzzle);
-            solution.remove(solution.size()-1);
-            steps+=10;
-            step_txt.setText("Step : "+steps);
+            updateWithSolution(solution.get(solution.size() - 1).puzzle);
+            solution.remove(solution.size() - 1);
+            steps += 10;
+            step_txt.setText("Step : " + steps);
         }
 
     }
 
-    private ArrayList<MyButton>  trasnlati(ArrayList<Integer> array){
-        ArrayList<MyButton> myButtons = new ArrayList<>();
-        for (int i=0; i<array.size();i++){
-            if (array.get(i)!=(ROW*ROW)-1){
-                MyButton myButton = new MyButton(new Button(context),array.get(i));
-                myButtons.add(myButton);
-            }else {
-                MyButton myButton = new MyButton(new Button(context),array.get(i));
-                myButton.setEempty(true);
-                myButtons.add(myButton);
-            }
-        }
-        return myButtons;
-    }
     private void updateWithSolution(ArrayList<MyButton> solution){
-
         ArrayList<MyButton> myButtons = solution;
         for (int i=0; i< myButtons.size();i++){
             if(!myButtons.get(i).isEempty())
@@ -289,18 +271,12 @@ public class Game  {
                 myButtons.get(i).getButton().setText("");
                 setEmpty(myButtons.get(i));
                 getEmpty().getButton().setId(myButtons.get(i).getButton().getId());
-                //empty
             }
             this.myButtons.set(i,myButtons.get(i));
         }
         rePaintLayout();
     }
-    public void test(){
-        String a = "";
-        for (int j=0;j<myButtons.size();j++)
-            a = a + "["+myButtons.get(j).getButton().getId()+":" +myButtons.get(j).getButton().getText().toString() + "] ";
-        Log.e("id",""+a);
-    }
+
 
 
 }
